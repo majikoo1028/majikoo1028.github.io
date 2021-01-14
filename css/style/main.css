@@ -1,3 +1,6 @@
+body {
+  background: url("/images/background.jpg");
+}
 :root {
   --main-color: #eb5757;
   --bg-color: #f4f4f4;
