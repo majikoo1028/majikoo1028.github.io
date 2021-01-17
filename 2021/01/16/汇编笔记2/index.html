@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>汇编笔记2 | Unbelievable</title>
+
+
+    <meta name="keywords" content="汇编笔记">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="第三章 寄存器（内存访问）内存中字的存储  内存单元&#x3D;&#x3D;字节单元 字单元：由两个连续的内存单元组成，16位寄存器存储一个字，高8位地址存高字节，低8位地址存低字节   DS和[address] DS寄存器通常用来存放要访问的数据的段地址直接上例子   123mov bx,1000Hmov ds,bxmov al,[0]  8086CPU中，往DS里面写东西只能以mov ds,寄存器的方式，而不能像">
+<meta property="og:type" content="article">
+<meta property="og:title" content="汇编笔记2">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="第三章 寄存器（内存访问）内存中字的存储  内存单元&#x3D;&#x3D;字节单元 字单元：由两个连续的内存单元组成，16位寄存器存储一个字，高8位地址存高字节，低8位地址存低字节   DS和[address] DS寄存器通常用来存放要访问的数据的段地址直接上例子   123mov bx,1000Hmov ds,bxmov al,[0]  8086CPU中，往DS里面写东西只能以mov ds,寄存器的方式，而不能像">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/1.jpg">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/2.jpg">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/3.jpg">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/4.jpg">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/5.jpg">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/6.jpg">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/7.jpg">
+<meta property="article:published_time" content="2021-01-16T02:37:06.000Z">
+<meta property="article:modified_time" content="2021-01-17T09:51:13.765Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="汇编笔记">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://majikoo1028.github.io/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/1.jpg">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+    
+<link rel="stylesheet" href="/css/style/dark.css">
+
+    
+<script src="/js/darkmode.js"></script>
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+    <a href="javaScript:void(0);" id="btn-toggle-dark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </a>
+
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        汇编笔记2
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/01/" class="post-meta__date button">2021-01-16</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-%E5%AF%84%E5%AD%98%E5%99%A8%EF%BC%88%E5%86%85%E5%AD%98%E8%AE%BF%E9%97%AE%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">第三章 寄存器（内存访问）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E4%B8%AD%E5%AD%97%E7%9A%84%E5%AD%98%E5%82%A8"><span class="toc-number">1.1.</span> <span class="toc-text">内存中字的存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DS%E5%92%8C-address"><span class="toc-number">1.2.</span> <span class="toc-text">DS和[address]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%9A%84%E4%BC%A0%E9%80%81"><span class="toc-number">1.3.</span> <span class="toc-text">字的传送</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mov%E3%80%81add%E3%80%81sub%E6%8C%87%E4%BB%A4"><span class="toc-number">1.4.</span> <span class="toc-text">mov、add、sub指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%93%E4%BC%9A%E6%95%B0%E6%8D%AE%E5%92%8C%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.5.</span> <span class="toc-text">体会数据和程序的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CPU%E6%8F%90%E4%BE%9B%E7%9A%84%E6%A0%88%E6%9C%BA%E5%88%B6"><span class="toc-number">1.6.</span> <span class="toc-text">CPU提供的栈机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#push-%E5%92%8C-pop-%E6%8C%87%E4%BB%A4"><span class="toc-number">1.7.</span> <span class="toc-text">push 和 pop 指令</span></a></li></ol></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-%E5%AF%84%E5%AD%98%E5%99%A8%EF%BC%88%E5%86%85%E5%AD%98%E8%AE%BF%E9%97%AE%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">第三章 寄存器（内存访问）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E4%B8%AD%E5%AD%97%E7%9A%84%E5%AD%98%E5%82%A8"><span class="toc-number">1.1.</span> <span class="toc-text">内存中字的存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DS%E5%92%8C-address"><span class="toc-number">1.2.</span> <span class="toc-text">DS和[address]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%9A%84%E4%BC%A0%E9%80%81"><span class="toc-number">1.3.</span> <span class="toc-text">字的传送</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mov%E3%80%81add%E3%80%81sub%E6%8C%87%E4%BB%A4"><span class="toc-number">1.4.</span> <span class="toc-text">mov、add、sub指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%93%E4%BC%9A%E6%95%B0%E6%8D%AE%E5%92%8C%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.5.</span> <span class="toc-text">体会数据和程序的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CPU%E6%8F%90%E4%BE%9B%E7%9A%84%E6%A0%88%E6%9C%BA%E5%88%B6"><span class="toc-number">1.6.</span> <span class="toc-text">CPU提供的栈机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#push-%E5%92%8C-pop-%E6%8C%87%E4%BB%A4"><span class="toc-number">1.7.</span> <span class="toc-text">push 和 pop 指令</span></a></li></ol></li></ol>
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h2 id="第三章-寄存器（内存访问）"><a href="#第三章-寄存器（内存访问）" class="headerlink" title="第三章 寄存器（内存访问）"></a>第三章 寄存器（内存访问）</h2><h3 id="内存中字的存储"><a href="#内存中字的存储" class="headerlink" title="内存中字的存储"></a>内存中字的存储</h3><blockquote>
+<ul>
+<li>内存单元==字节单元</li>
+<li>字单元：由两个连续的内存单元组成，16位寄存器存储一个字，高8位地址存高字节，低8位地址存低字节<br><img src="/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/1.jpg" alt="1"></li>
+</ul>
+</blockquote>
+<h3 id="DS和-address"><a href="#DS和-address" class="headerlink" title="DS和[address]"></a>DS和[address]</h3><blockquote>
+<p>DS寄存器通常用来存放<strong>要访问的数据的段地址</strong><br>直接上例子</p>
+</blockquote>
+<pre><code> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov bx,1000H</span><br><span class="line">mov ds,bx</span><br><span class="line">mov al,[0]</span><br></pre></td></tr></table></figure></code></pre>
+<blockquote>
+<p><strong>8086CPU</strong>中，往DS里面写东西只能以<code>mov ds,寄存器</code>的方式，而不能像ax寄存器那样<code>mov ax,1</code><br>CPU在执行上述类似指令的时候，会将[…]里的内容作偏移地址，取默认存在ds里的作为段地址来访问对应内存</p>
+</blockquote>
+<h3 id="字的传送"><a href="#字的传送" class="headerlink" title="字的传送"></a>字的传送</h3><p>   一个例子：<br>   <img src="/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/2.jpg" alt="2"></p>
+<h3 id="mov、add、sub指令"><a href="#mov、add、sub指令" class="headerlink" title="mov、add、sub指令"></a>mov、add、sub指令</h3><p>   <strong>mov</strong><br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mov 寄存器,数据</span><br><span class="line">mov 寄存器,寄存器</span><br><span class="line">mov 寄存器,内存单元</span><br><span class="line">mov 内存单元,寄存器</span><br><span class="line">mov 段寄存器,寄存器</span><br><span class="line">mov 段寄存器,寄存器</span><br><span class="line">mov 内存单元,段寄存器</span><br><span class="line">mov 段寄存器,内存单元</span><br></pre></td></tr></table></figure></p>
+<p>   <strong>add&amp;sub</strong><br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">add 寄存器,数据</span><br><span class="line">add 寄存器,寄存器</span><br><span class="line">add 寄存器,内存单元</span><br><span class="line">add 内存单元,寄存器</span><br><span class="line">sub 寄存器,数据</span><br><span class="line">sub 寄存器,寄存器</span><br><span class="line">sub 寄存器,内存单元</span><br><span class="line">sub 内存单元,寄存器</span><br></pre></td></tr></table></figure><br>   经实验，add和sub不支持寄存器与段寄存器之间的操作<br>   <img src="/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/3.jpg" alt="3"></p>
+<h3 id="体会数据和程序的区别"><a href="#体会数据和程序的区别" class="headerlink" title="体会数据和程序的区别"></a>体会数据和程序的区别</h3><p>   例：<br>   <img src="/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/4.jpg" alt="4"><br>   <img src="/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/5.jpg" alt="5"></p>
+<p>   程序和数据本身存放形式没有区别，关键是看存的的段地址：ds段的就是数据，cs段的就是程序指令。</p>
+<h3 id="CPU提供的栈机制"><a href="#CPU提供的栈机制" class="headerlink" title="CPU提供的栈机制"></a>CPU提供的栈机制</h3><p>   push ax ：表示将寄存器ax中的<strong>数据</strong>送入栈（<strong>字型数据高位字节先入栈</strong>）</p>
+<p>   pop ax 表示从栈顶取出数据送入ax（<strong>先出的为低位字节</strong>）</p>
+<p>   入栈和出栈操作都是以<strong>字</strong>为单位进行的</p>
+<p>   <img src="/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/6.jpg" alt="6"></p>
+<p>   <strong>8086CPU</strong>中的SS(段寄存器)：SP(寄存器)在任意时刻都指向栈顶元素。push和pop指令执行时，CPU从SS和SP中得到栈顶地址</p>
+<p>   入栈时，栈顶从<strong>高地址向低地址</strong>方向延伸</p>
+<p>   <strong>栈空</strong>时，SS：SP指向栈空间最高地址单元的下一个单元，如：<br>   <img src="/2021/01/16/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B02/7.jpg" alt="7"></p>
+<p>   push 和 pop都有可能导致栈顶越界</p>
+<p>   <strong>8086CPU</strong>不会保证我们对栈的操作不会超界，要自己操心~</p>
+<h3 id="push-和-pop-指令"><a href="#push-和-pop-指令" class="headerlink" title="push 和 pop 指令"></a>push 和 pop 指令</h3><p>   push(pop) 寄存器/段寄存器/内存单元</p>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-01-17</p></div> 
+    <div class="post-meta__cats"><a href="/tags/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B0/" class="post-tags__link button"># 汇编笔记</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/01/15/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            hexo博客搭建
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>
