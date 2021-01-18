@@ -158,6 +158,10 @@
         汇编笔记2
     </h2>
     
+        <p>
+            第三章 寄存器（内存访问）内存中字的存储
+        </p>
+    
 </div>
 <div class="post-entry__meta">
     <a href="/archives/2021/01/" class="post-meta__date button">2021-01-16</a>
@@ -174,6 +178,11 @@
     <h2 class="post-entry__title">
         hexo博客搭建
     </h2>
+    
+        <p>
+            怕踩坑的建议先把这篇文章全看完后，再着手开始
+hexo + github 部署个人博客看
+        </p>
     
 </div>
 <div class="post-entry__meta">
@@ -233,6 +242,24 @@
     <h2 class="post-entry__title">
         2021寒假学习计划
     </h2>
+    
+        <p>
+            
+至少要看的书
+
+
+《汇编语言》——王爽
+《计算机组成原理》——白中英
+《ctfer 0 到 1》（逆向篇）
+
+
+
+有多余时间就看
+
+
+《程序员的自我修养》
+
+        </p>
     
 </div>
 <div class="post-entry__meta">
@@ -313,6 +340,17 @@
 
  
 
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
  
 
 

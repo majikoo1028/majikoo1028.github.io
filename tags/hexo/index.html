@@ -161,6 +161,11 @@
         hexo博客搭建
     </h2>
     
+        <p>
+            怕踩坑的建议先把这篇文章全看完后，再着手开始
+hexo + github 部署个人博客看
+        </p>
+    
 </div>
 <div class="post-entry__meta">
     <a href="/archives/2021/01/" class="post-meta__date button">2021-01-15</a>
@@ -240,6 +245,17 @@
 
  
 
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
  
 
 

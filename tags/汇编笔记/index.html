@@ -161,6 +161,10 @@
         汇编笔记2
     </h2>
     
+        <p>
+            第三章 寄存器（内存访问）内存中字的存储
+        </p>
+    
 </div>
 <div class="post-entry__meta">
     <a href="/archives/2021/01/" class="post-meta__date button">2021-01-16</a>
@@ -261,6 +265,17 @@
 
  
 
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
  
 
 
