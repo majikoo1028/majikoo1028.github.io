@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>IDA动态调试elf | Unbelievable</title>
+
+
+    <meta name="keywords" content="动态调试, IDA">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="今天第一次用IDA动态调试elf，这题本不太需要，就是想借此把elf的调试方法和步骤过一遍，踩了好多坑…  把ida中的linux_server(多少位的程序就用对应的server)拖入linux   把要调试的elf也一并拖入linux，和server放在同一目录下；然后chmod 777 server文件名改属性；终端运行server若blind: Address already in use">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IDA动态调试elf">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/01/20/IDA%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95elf/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="今天第一次用IDA动态调试elf，这题本不太需要，就是想借此把elf的调试方法和步骤过一遍，踩了好多坑…  把ida中的linux_server(多少位的程序就用对应的server)拖入linux   把要调试的elf也一并拖入linux，和server放在同一目录下；然后chmod 777 server文件名改属性；终端运行server若blind: Address already in use">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/01/20/IDA%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95elf/1.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/01/20/IDA%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95elf/2.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/01/20/IDA%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95elf/3.png">
+<meta property="article:published_time" content="2021-01-19T17:49:49.000Z">
+<meta property="article:modified_time" content="2021-01-19T18:21:50.123Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="动态调试">
+<meta property="article:tag" content="IDA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://majikoo1028.github.io/2021/01/20/IDA%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95elf/1.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        IDA动态调试elf
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/01/" class="post-meta__date button">2021-01-20</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <p>今天第一次用<strong>IDA</strong>动态调试elf，这题本不太需要，就是想借此把elf的调试方法和步骤过一遍，踩了好多坑…</p>
+<ol>
+<li><p>把ida中的<strong>linux_server</strong>(多少位的程序就用对应的server)拖入linux</p>
+</li>
+<li><blockquote>
+<p>把要调试的elf也一并拖入linux，和server放在同一目录下；<br>然后<code>chmod 777 server文件名</code>改属性；<br>终端运行server<br>若<code>blind: Address already in use</code>，则先<code>netstat -nap</code>查看运行server程序的pid，然后<code>kill -9 pid</code>以结束进程，再重新运行server</p>
+</blockquote>
+</li>
+<li><p>配置IDA</p>
+<blockquote>
+<p>Debugger 选择remote linux debugger<br><img src="/2021/01/20/IDA%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95elf/1.png" alt="1"><br>前三个是目录，前两个要包含elf文件的名字，Hostname为虚拟机的ip<br>程序设置好断点，F9</p>
+</blockquote>
+</li>
+<li><p>可能遇到的问题</p>
+</li>
+</ol>
+<ul>
+<li>程序可能因人为设置没法调试，今天这个<strong>buu-re-11</strong>的题就是这样<br><img src="/2021/01/20/IDA%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95elf/2.png" alt="2"><br><img src="/2021/01/20/IDA%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95elf/3.png" alt="3"><br>其中的原因和方法今天先放一放</li>
+<li>修改文件指令的时候要记得写入文件保存edit-patch-apply</li>
+<li>修改后的文件要拖入linux覆盖，这样才能生效</li>
+</ul>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-01-20</p></div> 
+    <div class="post-meta__cats"><a href="/tags/%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95/" class="post-tags__link button"># 动态调试</a><a href="/tags/IDA/" class="post-tags__link button"># IDA</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/01/20/buu-re-11/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            buu-re-11
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+ 
+
+ 
+
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>
