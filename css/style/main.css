@@ -1133,6 +1133,26 @@ details .fold-content>:first-child {
 details .fold-content>:last-child {
   margin-bottom: 0;
 }
+.sliding-fold.collapsed>summary:after {
+  float: right;
+  content: "+";
+}
+.sliding-fold.collapsed .fold-content {
+  max-height: 0;
+  overflow: hidden;
+  margin: 0;
+}
+.sliding-fold.expanded>summary:after {
+  float: right;
+  content: "-";
+}
+.sliding-fold.expanded .fold-content {
+  max-height: 100%;
+  overflow: hidden;
+}
+.sliding-fold .fold-content {
+  transition: all 0.375s;
+}
 .blockquote-note {
   margin: 1rem 0;
   padding: 1rem;
