@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>迷宫类题目一些伪代码小经验 | Unbelievable</title>
+
+
+    <meta name="keywords" content="迷宫, 二维数组伪代码">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="说是关于迷宫类题的，其实就是二维数组伪代码的审计问题 先上码 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475__int64 __fastcall main(__in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="迷宫类题目一些伪代码小经验">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/01/23/%E8%BF%B7%E5%AE%AB%E7%B1%BB%E9%A2%98%E7%9B%AE%E4%B8%80%E4%BA%9B%E4%BC%AA%E4%BB%A3%E7%A0%81%E5%B0%8F%E7%BB%8F%E9%AA%8C/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="说是关于迷宫类题的，其实就是二维数组伪代码的审计问题 先上码 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475__int64 __fastcall main(__in">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-01-23T03:36:49.000Z">
+<meta property="article:modified_time" content="2021-01-23T04:18:52.885Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="迷宫">
+<meta property="article:tag" content="二维数组伪代码">
+<meta name="twitter:card" content="summary_large_image">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        迷宫类题目一些伪代码小经验
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/01/" class="post-meta__date button">2021-01-23</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <p>说是关于迷宫类题的，其实就是二维数组伪代码的审计问题</p>
+<p>先上码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__int64 __fastcall <span class="title">main</span><span class="params">(__int64 a1, <span class="keyword">char</span> **a2, <span class="keyword">char</span> **a3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">signed</span> __int64 v3; <span class="comment">// rbx</span></span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> v4; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">bool</span> v5; <span class="comment">// bp</span></span><br><span class="line">  <span class="keyword">bool</span> v6; <span class="comment">// al</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *v7; <span class="comment">// rdi</span></span><br><span class="line">  __int64 v9; <span class="comment">// [rsp+0h] [rbp-28h]</span></span><br><span class="line"></span><br><span class="line">  v9 = <span class="number">0LL</span>;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;Input flag:&quot;</span>);</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, &amp;s1, <span class="number">0LL</span>);</span><br><span class="line">  <span class="keyword">if</span> ( <span class="built_in">strlen</span>(&amp;s1) != <span class="number">24</span> || <span class="built_in">strncmp</span>(&amp;s1, <span class="string">&quot;nctf&#123;&quot;</span>, <span class="number">5uLL</span>) || *(&amp;byte_6010BF + <span class="number">24</span>) != <span class="number">125</span> )</span><br><span class="line">  &#123;</span><br><span class="line">NO_either:</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Wrong flag!&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  v3 = <span class="number">5LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="built_in">strlen</span>(&amp;s1) - <span class="number">1</span> &gt; <span class="number">5</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      v4 = *(&amp;s1 + v3);</span><br><span class="line">      v5 = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">if</span> ( v4 &gt; <span class="number">78</span> )</span><br><span class="line">      &#123;</span><br><span class="line">        v4 = (<span class="keyword">unsigned</span> __int8)v4;</span><br><span class="line">        <span class="keyword">if</span> ( (<span class="keyword">unsigned</span> __int8)v4 == <span class="number">79</span> )        <span class="comment">// O</span></span><br><span class="line">        &#123;</span><br><span class="line">          v6 = left((_DWORD *)&amp;v9 + <span class="number">1</span>);         <span class="comment">// 左</span></span><br><span class="line">          <span class="keyword">goto</span> pre_ifboundary;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> ( v4 == <span class="number">111</span> )                        <span class="comment">// o</span></span><br><span class="line">        &#123;</span><br><span class="line">          v6 = rignt((<span class="keyword">int</span> *)&amp;v9 + <span class="number">1</span>);           <span class="comment">// 右</span></span><br><span class="line">          <span class="keyword">goto</span> pre_ifboundary;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">      &#123;</span><br><span class="line">        v4 = (<span class="keyword">unsigned</span> __int8)v4;</span><br><span class="line">        <span class="keyword">if</span> ( (<span class="keyword">unsigned</span> __int8)v4 == <span class="number">46</span> )        <span class="comment">// .</span></span><br><span class="line">        &#123;</span><br><span class="line">          v6 = up(&amp;v9);                         <span class="comment">// 上</span></span><br><span class="line">          <span class="keyword">goto</span> pre_ifboundary;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> ( v4 == <span class="number">48</span> )                         <span class="comment">// 0</span></span><br><span class="line">        &#123;</span><br><span class="line">          v6 = down((<span class="keyword">int</span> *)&amp;v9);                <span class="comment">// 下</span></span><br><span class="line">pre_ifboundary:</span><br><span class="line">          v5 = v6;</span><br><span class="line">          <span class="keyword">goto</span> ifboundary;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">ifboundary:</span><br><span class="line">      <span class="keyword">if</span> ( !(<span class="keyword">unsigned</span> __int8)ifboundary_((__int64)asc_601060, SHIDWORD(v9), v9) )</span><br><span class="line">        <span class="keyword">goto</span> NO_either;</span><br><span class="line">      <span class="keyword">if</span> ( ++v3 &gt;= <span class="built_in">strlen</span>(&amp;s1) - <span class="number">1</span> )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">if</span> ( v5 )</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">NO:</span><br><span class="line">        v7 = <span class="string">&quot;Wrong flag!&quot;</span>;</span><br><span class="line">        <span class="keyword">goto</span> YES;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( asc_601060[<span class="number">8</span> * (<span class="keyword">signed</span> <span class="keyword">int</span>)v9 + SHIDWORD(v9)] != <span class="number">35</span> )</span><br><span class="line">    <span class="keyword">goto</span> NO;</span><br><span class="line">  v7 = <span class="string">&quot;Congratulations!&quot;</span>;</span><br><span class="line">YES:</span><br><span class="line">  <span class="built_in">puts</span>(v7);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p><strong>行走方向</strong>和<strong>标识符</strong>在注释处；</p>
+<p>挑一个函数来讲<code>left((_DWORD *)&amp;v9 + 1)</code>：参数意思就是修改<strong>高32位</strong>，<code>left</code>里面的内容是<code>(*传进来的地址)--</code></p>
+<p>就是把二维数组[][]看成 [低32位]（行）[高32位]（列）</p>
+<p>应该还有很多表示这种意思的伪代码，这里只记录一下这一种思想</p>
+<p>具体迷宫问题可以参考<a target="_blank" rel="noopener" href="https://ctf-wiki.github.io/ctf-wiki/reverse/maze/maze/">https://ctf-wiki.github.io/ctf-wiki/reverse/maze/maze/</a></p>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-01-23</p></div> 
+    <div class="post-meta__cats"><a href="/tags/%E8%BF%B7%E5%AE%AB/" class="post-tags__link button"># 迷宫</a><a href="/tags/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E4%BC%AA%E4%BB%A3%E7%A0%81/" class="post-tags__link button"># 二维数组伪代码</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/01/20/IDA%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95elf/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            IDA动态调试elf
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+ 
+
+ 
+
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>
