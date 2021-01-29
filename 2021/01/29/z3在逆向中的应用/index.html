@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>z3在逆向中的应用 | Unbelievable</title>
+
+
+    <meta name="keywords" content="z3">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="什么是z3z3是一个python api，可用来辅助完成一些带约束条件的未知数求解 一言以蔽之：用来解方程 用法教程这两个应该够用了，放在这备忘： [https:&#x2F;&#x2F;www.freebuf.com&#x2F;articles&#x2F;database&#x2F;170814.html] [https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_35713009&#x2F;article&#x2F;details&#x2F;88743410] 我使用的一些例子增">
+<meta property="og:type" content="article">
+<meta property="og:title" content="z3在逆向中的应用">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/01/29/z3%E5%9C%A8%E9%80%86%E5%90%91%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="什么是z3z3是一个python api，可用来辅助完成一些带约束条件的未知数求解 一言以蔽之：用来解方程 用法教程这两个应该够用了，放在这备忘： [https:&#x2F;&#x2F;www.freebuf.com&#x2F;articles&#x2F;database&#x2F;170814.html] [https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_35713009&#x2F;article&#x2F;details&#x2F;88743410] 我使用的一些例子增">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-01-29T09:23:39.000Z">
+<meta property="article:modified_time" content="2021-01-29T10:19:57.782Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="z3">
+<meta name="twitter:card" content="summary_large_image">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        z3在逆向中的应用
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/01/" class="post-meta__date button">2021-01-29</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFz3"><span class="toc-number">1.</span> <span class="toc-text">什么是z3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E4%BD%BF%E7%94%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E4%BE%8B%E5%AD%90"><span class="toc-number">2.</span> <span class="toc-text">我使用的一些例子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E5%B9%BF%E7%9F%A9%E9%98%B5%E6%B1%82%E8%A7%A3%E6%9C%AA%E7%9F%A5%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">增广矩阵求解未知数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%9C%E4%BD%8D%E8%BF%90%E7%AE%97%E2%80%9D%E5%A4%84%E7%90%86%E6%B1%82%E8%A7%A3"><span class="toc-number">2.2.</span> <span class="toc-text">“位运算”处理求解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#z3%EF%BC%8C%E9%80%86%E5%90%91%E7%A5%9E%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">z3，逆向神器</span></a></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFz3"><span class="toc-number">1.</span> <span class="toc-text">什么是z3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E4%BD%BF%E7%94%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E4%BE%8B%E5%AD%90"><span class="toc-number">2.</span> <span class="toc-text">我使用的一些例子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E5%B9%BF%E7%9F%A9%E9%98%B5%E6%B1%82%E8%A7%A3%E6%9C%AA%E7%9F%A5%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">增广矩阵求解未知数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%9C%E4%BD%8D%E8%BF%90%E7%AE%97%E2%80%9D%E5%A4%84%E7%90%86%E6%B1%82%E8%A7%A3"><span class="toc-number">2.2.</span> <span class="toc-text">“位运算”处理求解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#z3%EF%BC%8C%E9%80%86%E5%90%91%E7%A5%9E%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">z3，逆向神器</span></a></li></ol>
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h2 id="什么是z3"><a href="#什么是z3" class="headerlink" title="什么是z3"></a>什么是z3</h2><p><strong>z3</strong>是一个python api，可用来辅助完成一些带约束条件的未知数求解</p>
+<p>一言以蔽之：<strong>用来解方程</strong></p>
+<p>用法教程这两个应该够用了，放在这备忘：</p>
+<p>[<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/database/170814.html]">https://www.freebuf.com/articles/database/170814.html]</a></p>
+<p>[<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35713009/article/details/88743410]">https://blog.csdn.net/qq_35713009/article/details/88743410]</a></p>
+<h2 id="我使用的一些例子"><a href="#我使用的一些例子" class="headerlink" title="我使用的一些例子"></a>我使用的一些例子</h2><h3 id="增广矩阵求解未知数"><a href="#增广矩阵求解未知数" class="headerlink" title="增广矩阵求解未知数"></a>增广矩阵求解未知数</h3><p>这题是<a target="_blank" rel="noopener" href="https://unbelievable.cool/2021/01/28/wust%E8%9A%81%E6%99%AF%E6%9D%AF/">wust蚁景杯里的equation</a></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下面是从ida提取出来的数据，每一行的“大数”是“=”左边，剩下的是“=”右边的未知数系数</span></span><br><span class="line"><span class="comment"># 共 42 行，42个未知数，可解，但我必不可能手算</span></span><br><span class="line">pre = <span class="string">&quot;234923  89 30 21 11 28 97 68 91 36 29 54 38 18 31 27 25 42 93 45 89 80 94 57 68 59 75 74 47 40 25 68 52 86 81 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;38 23 90 80 54 66 80 36\x0A233479  65 11 81 65 58 53 86 44 62 39 64 41 93 67 34 30 25 45 76 17 91 47 57 82 26 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;17 94 51 21 80 59 26 75 75 25 67 52 23 81 57 79 98\x0A231388  63 83 55 29 57 53 31 99 27 92 85 98 63 80 18 78 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;79 28 96 16 95 27 25 71 40 89 79 81 13 85 41 44 50 55 11 32 76 65 20 37 58 27\x0A223405  39 69 44 25 49 15 16 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;96 35 32 92 95 11 58 31 90 67 72 83 78 15 25 93 96 97 31 58 59 14 86 36 37 22 75 43 72 13 26 18 64 64 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;83\x0A234762  94 82 88 51 31 71 44 74 26 46 95 66 54 75 19 72 93 16 85 54 46 87 15 46 74 27 26 48 83 13 38 94 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;45 52 24 72 59 71 32 65 24 93\x0A242484  34 75 68 93 79 19 14 76 60 69 73 29 48 61 49 64 98 29 77 81 85 11 87 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;11 72 63 87 40 47 48 87 54 88 27 26 67 93 50 79 42 12 32\x0A232356  76 61 21 72 11 93 13 63 15 13 73 49 48 76 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;52 81 62 78 84 79 95 74 57 21 13 95 15 93 57 38 89 98 68 69 21 40 20 55 62 29 54 40\x0A239858  98 66 92 23 97 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;55 72 69 81 41 38 21 56 95 86 39 78 53 65 37 80 56 38 60 94 72 20 43 50 28 81 63 12 60 32 12 22 86 65 32 76 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;71\x0A218896  32 15 73 84 27 21 74 21 35 26 85 28 57 91 37 12 67 47 10 74 62 53 73 84 94 46 74 47 57 40 88 71 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;13 32 81 95 57 28 13 94 45 34\x0A249026  50 47 34 57 12 34 76 54 79 18 44 73 50 92 51 72 39 91 26 74 97 42 86 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;79 53 50 62 14 71 55 87 64 77 62 63 48 27 81 93 85 65 83\x0A222855  92 26 78 74 25 38 64 98 68 71 14 99 92 11 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;31 29 20 52 17 10 21 37 99 52 66 32 57 58 25 25 93 54 96 70 18 66 84 27 44 28 52 83\x0A210754  53 39 23 68 62 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;44 98 17 80 16 63 51 15 49 84 23 97 26 65 35 11 83 43 64 21 39 37 79 73 61 55 57 58 69 16 10 48 86 80 13 67 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;32\x0A261049  12 69 82 77 95 22 21 85 79 58 48 83 47 77 64 80 56 35 78 67 46 93 51 75 69 62 44 11 46 98 37 93 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;34 53 87 46 85 79 69 81 45 86\x0A254017  51 74 62 62 86 10 49 94 65 50 62 95 48 66 14 84 61 41 89 78 46 60 20 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;97 32 65 61 78 57 16 64 97 81 81 76 61 27 46 99 64 35 99\x0A202040  15 47 16 70 28 32 65 82 53 32 29 25 69 96 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;52 76 22 41 82 91 47 24 55 40 18 19 52 83 37 51 89 37 27 55 40 82 61 27 26 28 30 73\x0A213614  11 29 51 69 81 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;96 58 97 36 81 18 62 73 32 72 11 49 61 69 67 54 30 10 70 42 27 19 11 97 83 27 40 63 12 41 21 84 74 22 19 65 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;79\x0A246738  76 64 47 17 80 57 93 11 79 98 56 86 23 67 63 11 54 72 80 44 50 61 14 43 80 48 63 52 99 79 40 64 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;49 55 52 78 48 60 44 32 85 98\x0A204859  77 34 26 66 87 76 58 39 81 60 83 23 16 62 33 36 85 40 64 78 22 11 81 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;81 27 12 11 41 15 19 69 20 26 66 17 87 50 67 47 21 31 81\x0A248644  56 66 51 80 33 73 76 42 13 91 75 90 82 20 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;15 99 33 18 22 28 39 17 74 54 78 47 61 68 73 95 60 52 84 11 78 67 82 79 31 94 78 74\x0A227559  24 15 63 20 81 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;71 50 77 98 71 98 43 57 10 66 53 36 45 44 54 90 22 96 68 98 27 71 78 37 43 20 50 82 84 19 76 59 27 47 31 19 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;31\x0A215120  45 66 23 77 41 65 99 35 67 29 63 77 55 36 27 63 43 70 55 11 28 17 77 90 28 57 62 98 84 96 36 43 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;30 73 32 25 34 14 91 18 73 26\x0A218244  65 25 41 22 34 46 91 70 35 22 65 60 96 58 76 80 21 62 59 70 51 50 39 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;14 31 39 79 49 45 82 74 35 56 24 93 47 32 41 14 15 71 51\x0A229321  45 99 29 14 89 72 48 43 92 10 94 13 33 94 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;59 22 65 29 23 86 67 83 28 46 83 89 48 59 28 38 82 32 70 50 28 39 24 60 17 37 60 90\x0A233372  62 66 17 38 19 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;83 12 98 61 57 63 67 69 10 24 75 60 87 76 37 91 35 20 30 24 77 29 27 40 36 98 82 20 67 45 96 99 80 17 55 74 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;55\x0A251643  64 68 36 79 23 96 16 40 79 16 85 77 99 56 95 99 60 28 11 96 22 66 47 66 90 48 80 34 22 47 66 80 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;37 43 75 84 23 21 39 85 64 95\x0A245051  14 55 61 90 62 91 24 31 40 34 88 59 65 26 16 28 36 33 81 91 99 57 69 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;75 32 98 17 60 94 16 89 51 35 74 87 98 52 39 73 41 65 65\x0A228339  58 64 96 49 96 43 13 28 42 90 80 33 68 62 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;42 78 75 56 20 66 45 63 10 72 41 63 28 42 60 26 76 20 98 19 51 68 80 12 48 68 80 15\x0A271672  93 74 76 39 79 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;99 22 66 47 40 85 58 50 56 84 93 65 65 56 66 95 32 84 48 51 68 30 96 93 60 83 79 54 61 99 77 12 51 31 93 54 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;12\x0A207826  30 29 52 29 91 81 31 28 75 84 10 40 14 34 26 70 94 74 27 38 55 13 21 55 79 94 45 41 39 62 56 25 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;10 54 61 58 23 97 95 70 18 62\x0A208076  19 60 27 79 53 21 21 47 52 26 42 82 20 87 74 57 88 22 67 95 69 24 50 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;14 31 26 38 40 31 46 17 67 85 54 33 46 43 72 84 94 67 29\x0A230168  37 52 47 30 99 11 20 20 41 72 46 78 97 93 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;47 73 48 35 85 99 77 49 48 75 94 44 29 11 18 71 82 88 27 70 95 26 19 73 61 51 55 51\x0A195444  92 21 36 77 36 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;27 25 45 48 16 73 90 71 53 47 39 75 33 96 11 22 18 15 48 20 16 90 50 66 11 49 91 23 60 81 53 57 18 19 40 54 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;48\x0A233025  47 22 61 36 88 58 42 13 69 33 89 93 93 75 31 98 65 94 77 16 14 99 21 89 90 37 27 11 22 80 66 65 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;31 70 76 29 49 92 51 38 27 47\x0A224202  69 33 97 97 51 59 15 17 92 59 84 19 33 54 78 15 50 28 40 68 75 23 55 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;38 69 46 21 39 36 74 84 90 31 57 81 21 46 66 63 23 43 82\x0A246170  26 52 48 41 14 64 11 31 90 49 93 92 45 56 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;99 85 81 26 34 27 55 55 85 26 41 83 41 46 89 41 66 96 92 16 47 73 59 85 57 88 70 49\x0A223337  26 74 51 31 10 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;55 23 33 62 97 93 71 96 89 28 35 63 26 66 12 83 67 39 72 92 78 70 19 63 76 74 70 84 31 18 22 54 74 32 30 65 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;15\x0A244180  88 20 28 71 54 74 73 90 12 35 49 94 69 20 18 88 80 88 73 65 19 40 23 17 21 48 71 89 96 61 92 81 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;74 36 78 16 81 39 43 12 80 91\x0A241027  30 64 16 36 85 58 43 97 90 85 79 28 28 86 24 40 43 22 95 74 73 29 35 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;13 82 67 77 76 19 70 29 61 92 51 82 98 40 83 72 33 81 41\x0A225646  55 16 69 49 35 88 71 14 64 16 23 34 81 89 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;66 79 20 40 11 10 52 74 55 26 64 30 97 65 51 88 55 59 20 18 97 86 65 28 44 71 64 93\x0A217174  48 91 36 87 35 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;11 40 67 90 25 39 85 29 97 57 44 99 88 34 83 75 10 73 63 44 63 56 17 94 16 28 78 55 63 19 22 37 36 42 16 49 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;51\x0A222271  51 55 27 49 54 89 77 58 15 36 25 43 71 57 78 55 54 58 28 79 87 92 39 88 61 11 27 66 59 96 79 75 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;69 25 16 40 68 30 16 12 51 48\x0A203973  71 29 57 59 30 75 67 39 95 14 48 49 35 93 56 94 14 59 12 49 19 40 16 &quot;</span> \</span><br><span class="line">      <span class="string">&quot;86 79 38 31 43 82 14 51 85 85 19 99 35 30 19 26 15 32 77 &quot;</span></span><br><span class="line"></span><br><span class="line">pre=pre.replace(<span class="string">&quot;\n&quot;</span>,<span class="string">&quot; &quot;</span>)     <span class="comment">#处理数据：去除换行符</span></span><br><span class="line">pre = pre.split(<span class="string">&quot; &quot;</span>)         <span class="comment">#处理数据：生成列表</span></span><br><span class="line">s = Solver()                <span class="comment"># 创建一个通用求解器</span></span><br><span class="line">x = [Int(<span class="string">&#x27;x%s&#x27;</span>%i) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">44</span>)]   <span class="comment"># 创建一个未知数列表x，里面包含x0~x43; x[1]==x1；创建44个是因为数据有偏移</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">for i in range(44):</span></span><br><span class="line"><span class="string">    print(&#x27;int(pre[i*44+&#123;&#125;])*x[&#123;&#125;]+&#x27;.format(i,i),end=&quot;&quot;) #生成约束条件，怎么可能手敲！</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 下面copy上生成出来的约束条件</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">42</span>):</span><br><span class="line">    s.add(<span class="built_in">int</span>(pre[i*<span class="number">44</span>]) == <span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">2</span>])*x[<span class="number">2</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">3</span>])*x[<span class="number">3</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">4</span>])*x[<span class="number">4</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">5</span>])*x[<span class="number">5</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">6</span>])*x[<span class="number">6</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">7</span>])*x[<span class="number">7</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">8</span>])*x[<span class="number">8</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">9</span>])*x[<span class="number">9</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">10</span>])*x[<span class="number">10</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">11</span>])*x[<span class="number">11</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">12</span>])*x[<span class="number">12</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">13</span>])*x[<span class="number">13</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">14</span>])*x[<span class="number">14</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">15</span>])*x[<span class="number">15</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">16</span>])*x[<span class="number">16</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">17</span>])*x[<span class="number">17</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">18</span>])*x[<span class="number">18</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">19</span>])*x[<span class="number">19</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">20</span>])*x[<span class="number">20</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">21</span>])*x[<span class="number">21</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">22</span>])*x[<span class="number">22</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">23</span>])*x[<span class="number">23</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">24</span>])*x[<span class="number">24</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">25</span>])*x[<span class="number">25</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">26</span>])*x[<span class="number">26</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">27</span>])*x[<span class="number">27</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">28</span>])*x[<span class="number">28</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">29</span>])*x[<span class="number">29</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">30</span>])*x[<span class="number">30</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">31</span>])*x[<span class="number">31</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">32</span>])*x[<span class="number">32</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">33</span>])*x[<span class="number">33</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">34</span>])*x[<span class="number">34</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">35</span>])*x[<span class="number">35</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">36</span>])*x[<span class="number">36</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">37</span>])*x[<span class="number">37</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">38</span>])*x[<span class="number">38</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">39</span>])*x[<span class="number">39</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">40</span>])*x[<span class="number">40</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">41</span>])*x[<span class="number">41</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">42</span>])*x[<span class="number">42</span>]+<span class="built_in">int</span>(pre[i*<span class="number">44</span>+<span class="number">43</span>])*x[<span class="number">43</span>])</span><br><span class="line"></span><br><span class="line">print(s.check())  <span class="comment">#.check() == unknow(无解)/sat(有解)</span></span><br><span class="line">m=s.model()     <span class="comment">#.model() 是每个未知数的解；</span></span><br><span class="line">flag = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> m:</span><br><span class="line">    flag.append(<span class="built_in">str</span>(m[i]))     <span class="comment">#这里先转成str好处理，因为m[i]好像不是普通的‘int’型</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>,<span class="built_in">len</span>(flag)+<span class="number">2</span>):   <span class="comment">#体现偏移；打印“flag”</span></span><br><span class="line">      print(<span class="built_in">chr</span>(<span class="built_in">int</span>(<span class="built_in">str</span>(m[x[i]]))),end=<span class="string">&quot;&quot;</span>)   <span class="comment">#按顺序遍历各个解；m[未知数变量名]==未知数变量的解，以此来顺序输出各个解的结果</span></span><br><span class="line">                                             <span class="comment"># 直接print(m) 可能是无序输出的解</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="“位运算”处理求解"><a href="#“位运算”处理求解" class="headerlink" title="“位运算”处理求解"></a>“位运算”处理求解</h3><p>Z3为符号数运算提供了一个特殊的运算符操作版本</p>
+<p>其中运算符&lt;，&lt;=，&gt;，&gt; =，/，％和&gt;&gt;对应于有符号运算</p>
+<p>相应的无符号运算符是ULT，ULE，UGT，UGE，UDiv，URem和LShR</p>
+<p>这是<a target="_blank" rel="noopener" href="https://unbelievable.cool/2021/01/28/wust%E8%9A%81%E6%99%AF%E6%9D%AF/">蚁景杯的easypyc</a></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#import z3</span></span><br><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"><span class="comment"># 关键就是求 ans = x^(x &gt;&gt;10) 里的x</span></span><br><span class="line"><span class="comment"># 常规方法还得自己写一个按位逆向的算法</span></span><br><span class="line"></span><br><span class="line">ans = <span class="number">0x6675FA7F228DBCEB6A2DC223A37FC64FE67E61</span></span><br><span class="line"></span><br><span class="line">x = BitVec(<span class="string">&#x27;x&#x27;</span>,<span class="number">160</span>)      <span class="comment"># 这里和普通的z3声明有区别，</span></span><br><span class="line">                         <span class="comment"># 意义为声明一个名为&#x27;x&#x27;的占160个bit的未知数变量</span></span><br><span class="line">s= Solver()</span><br><span class="line">s.add(x^(x &gt;&gt; <span class="number">10</span>)==ans)</span><br><span class="line">print(s.check())</span><br><span class="line">m = s.model()</span><br><span class="line">print(m[x])</span><br></pre></td></tr></table></figure></div>
+<h2 id="z3，逆向神器"><a href="#z3，逆向神器" class="headerlink" title="z3，逆向神器"></a>z3，逆向神器</h2>
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-01-29</p></div> 
+    <div class="post-meta__cats"><a href="/tags/z3/" class="post-tags__link button"># z3</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/01/28/wust%E8%9A%81%E6%99%AF%E6%9D%AF/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            wust蚁景杯
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+ 
+
+ 
+
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>
