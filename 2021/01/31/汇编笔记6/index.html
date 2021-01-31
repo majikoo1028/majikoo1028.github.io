@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>汇编笔记6 | Unbelievable</title>
+
+
+    <meta name="keywords" content="汇编笔记">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="第九章 转移指令的原理8086CPU 的转移 一些指令123456789101112131415161718192021offset 标号   ;取标号处偏移地址，例 mov di,offset sjmp short 标号    ;转到标号处执行指令，jmp指令实质上是提供偏移的“位移”                  ;(IP)&#x3D;(IP)+8位位移（-128~127用补码表示）jmp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="汇编笔记6">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/01/31/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B06/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="第九章 转移指令的原理8086CPU 的转移 一些指令123456789101112131415161718192021offset 标号   ;取标号处偏移地址，例 mov di,offset sjmp short 标号    ;转到标号处执行指令，jmp指令实质上是提供偏移的“位移”                  ;(IP)&#x3D;(IP)+8位位移（-128~127用补码表示）jmp">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/01/31/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B06/1.jpg">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/01/31/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B06/2.jpg">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/01/31/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B06/3.jpg">
+<meta property="article:published_time" content="2021-01-31T07:17:01.000Z">
+<meta property="article:modified_time" content="2021-01-31T08:07:16.680Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="汇编笔记">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://majikoo1028.github.io/2021/01/31/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B06/1.jpg">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        汇编笔记6
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/01/" class="post-meta__date button">2021-01-31</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B9%9D%E7%AB%A0-%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">第九章 转移指令的原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8086CPU-%E7%9A%84%E8%BD%AC%E7%A7%BB"><span class="toc-number">1.1.</span> <span class="toc-text">8086CPU 的转移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E6%8C%87%E4%BB%A4"><span class="toc-number">1.2.</span> <span class="toc-text">一些指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B9%9D"><span class="toc-number">1.3.</span> <span class="toc-text">实验九</span></a></li></ol></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B9%9D%E7%AB%A0-%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">第九章 转移指令的原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8086CPU-%E7%9A%84%E8%BD%AC%E7%A7%BB"><span class="toc-number">1.1.</span> <span class="toc-text">8086CPU 的转移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E6%8C%87%E4%BB%A4"><span class="toc-number">1.2.</span> <span class="toc-text">一些指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B9%9D"><span class="toc-number">1.3.</span> <span class="toc-text">实验九</span></a></li></ol></li></ol>
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h2 id="第九章-转移指令的原理"><a href="#第九章-转移指令的原理" class="headerlink" title="第九章 转移指令的原理"></a>第九章 转移指令的原理</h2><h3 id="8086CPU-的转移"><a href="#8086CPU-的转移" class="headerlink" title="8086CPU 的转移"></a>8086CPU 的转移</h3><p><img src="/2021/01/31/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B06/1.jpg" alt="1"></p>
+<h3 id="一些指令"><a href="#一些指令" class="headerlink" title="一些指令"></a>一些指令</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">offset 标号   ;取标号处偏移地址，例 mov di,offset s</span><br><span class="line"></span><br><span class="line">jmp short 标号    ;转到标号处执行指令，jmp指令实质上是提供偏移的“位移”</span><br><span class="line">                  ;(IP)&#x3D;(IP)+8位位移（-128~127用补码表示）</span><br><span class="line"></span><br><span class="line">jmp near ptr 标号    ;(IP)&#x3D;(IP)+16位位移（-32768~32767用补码表示）</span><br><span class="line"></span><br><span class="line">jmp far ptr 标号   ;段间转移（远转移）</span><br><span class="line">                   ;(CS)&#x3D;标号处所在的段地址，(IP)&#x3D;标号处在段中的偏移地址</span><br><span class="line"></span><br><span class="line">jmp 16位reg     ;(IP)&#x3D;(reg)</span><br><span class="line"></span><br><span class="line">jmp word ptr 内存单元地址（段内转移）  </span><br><span class="line">                        ;内存中的大小为字的偏移地址</span><br><span class="line"></span><br><span class="line">jmp dword ptr 内存单元地址（段间转移）</span><br><span class="line">                        ;高地址处的字是转移目的的段地址</span><br><span class="line">                        ;低地址处是偏移地址</span><br><span class="line"></span><br><span class="line">jcxz 标号      ;条件转移（所有的条件转移都是短转移）</span><br><span class="line">               ;如果cx&#x3D;&#x3D;0，则转移至标号处</span><br></pre></td></tr></table></figure></div>
+<p>所有的转移，超界(比如短转移超过128个字节)编译都会报错</p>
+<h3 id="实验九"><a href="#实验九" class="headerlink" title="实验九"></a>实验九</h3><p>贴一下实验9的内容吧</p>
+<p><img src="/2021/01/31/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B06/2.jpg" alt="2"><br><img src="/2021/01/31/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B06/3.jpg" alt="3"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codesg</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">	db &#39;welcome to masm!&#39;</span><br><span class="line">	db 02h,24h,71h</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">	db 0,0,0,0,0,0,0,0</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">codesg segment</span><br><span class="line">start:</span><br><span class="line">	mov ax,0B878h     ;设置打印行地址</span><br><span class="line">	mov ds,ax</span><br><span class="line">	mov ax,stack</span><br><span class="line">	mov ss,ax</span><br><span class="line">	mov sp,9</span><br><span class="line">	mov di,0</span><br><span class="line">	mov ax,data</span><br><span class="line">	mov es,ax</span><br><span class="line">	</span><br><span class="line">	mov si,64</span><br><span class="line">	mov cx,3</span><br><span class="line">	s0:</span><br><span class="line">	push cx</span><br><span class="line">	mov bx,0</span><br><span class="line">	mov ah,es:[16+di]</span><br><span class="line">	</span><br><span class="line">	mov cx,16</span><br><span class="line">	s:                 ;打印一行数据</span><br><span class="line">	mov al,es:[bx]</span><br><span class="line">	mov ds:[si],al</span><br><span class="line">	mov ds:[si+1],ah</span><br><span class="line">	add bx,1</span><br><span class="line">	add si,2</span><br><span class="line">	loop s</span><br><span class="line">	</span><br><span class="line">	add si,128       ;打印一行后换行</span><br><span class="line">	inc di</span><br><span class="line">	pop cx</span><br><span class="line">	loop s0</span><br><span class="line"></span><br><span class="line">keepon:</span><br><span class="line">	jmp short keepon</span><br><span class="line"></span><br><span class="line">	mov ax,4c00h</span><br><span class="line">	int 21h</span><br><span class="line">codesg ends</span><br><span class="line"></span><br><span class="line">end start</span><br></pre></td></tr></table></figure></div>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-01-31</p></div> 
+    <div class="post-meta__cats"><a href="/tags/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B0/" class="post-tags__link button"># 汇编笔记</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/01/29/z3%E5%9C%A8%E9%80%86%E5%90%91%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            z3在逆向中的应用
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+ 
+
+ 
+
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>
