@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>buu-re-15 | Unbelievable</title>
+
+
+    <meta name="keywords" content="buu, wp">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="本来刷题是不打算再这么频繁地写博客的，可这题实在是太好玩了 我的解法检查无壳，32位 cmd运行试试1发现要一个登录密码，一开始猜想密码就是flag，然后拖入ida静态分析 静态分析进入主要函数，看到程序开始运行所显示的一些内容，随便下了个断点开始逐步分析 一直到输入密码的地方，发现有个strcmp函数 发现是与字符串HelloWorld作比较，再打开程序，验证密码，发现密码正确，进入一个新界面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="buu-re-15">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/02/01/buu-re-15/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="本来刷题是不打算再这么频繁地写博客的，可这题实在是太好玩了 我的解法检查无壳，32位 cmd运行试试1发现要一个登录密码，一开始猜想密码就是flag，然后拖入ida静态分析 静态分析进入主要函数，看到程序开始运行所显示的一些内容，随便下了个断点开始逐步分析 一直到输入密码的地方，发现有个strcmp函数 发现是与字符串HelloWorld作比较，再打开程序，验证密码，发现密码正确，进入一个新界面">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/02/01/buu-re-15/2.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/02/01/buu-re-15/3.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/02/01/buu-re-15/4.png">
+<meta property="article:published_time" content="2021-02-01T10:46:36.000Z">
+<meta property="article:modified_time" content="2021-02-01T11:28:18.852Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="buu">
+<meta property="article:tag" content="wp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://majikoo1028.github.io/2021/02/01/buu-re-15/2.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        buu-re-15
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/02/" class="post-meta__date button">2021-02-01</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E8%A7%A3%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">我的解法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5"><span class="toc-number">1.1.</span> <span class="toc-text">检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cmd%E8%BF%90%E8%A1%8C%E8%AF%95%E8%AF%95"><span class="toc-number">1.2.</span> <span class="toc-text">cmd运行试试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90"><span class="toc-number">1.3.</span> <span class="toc-text">静态分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E4%B8%8A%E5%88%AB%E4%BA%BA%E7%9A%84wp"><span class="toc-number">2.</span> <span class="toc-text">网上别人的wp</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#base58%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95%E7%9A%84%E7%89%B9%E5%BE%81"><span class="toc-number">2.1.</span> <span class="toc-text">base58编码算法的特征</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%A1%A8"><span class="toc-number">2.1.1.</span> <span class="toc-text">编码表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.1.2.</span> <span class="toc-text">编码步骤</span></a></li></ol></li></ol></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E8%A7%A3%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">我的解法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5"><span class="toc-number">1.1.</span> <span class="toc-text">检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cmd%E8%BF%90%E8%A1%8C%E8%AF%95%E8%AF%95"><span class="toc-number">1.2.</span> <span class="toc-text">cmd运行试试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90"><span class="toc-number">1.3.</span> <span class="toc-text">静态分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E4%B8%8A%E5%88%AB%E4%BA%BA%E7%9A%84wp"><span class="toc-number">2.</span> <span class="toc-text">网上别人的wp</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#base58%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95%E7%9A%84%E7%89%B9%E5%BE%81"><span class="toc-number">2.1.</span> <span class="toc-text">base58编码算法的特征</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%A1%A8"><span class="toc-number">2.1.1.</span> <span class="toc-text">编码表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.1.2.</span> <span class="toc-text">编码步骤</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <p>本来刷题是不打算再这么频繁地写博客的，可这题实在是太好玩了</p>
+<h2 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h2><h3 id="检查"><a href="#检查" class="headerlink" title="检查"></a>检查</h3><p>无壳，32位</p>
+<h3 id="cmd运行试试"><a href="#cmd运行试试" class="headerlink" title="cmd运行试试"></a>cmd运行试试</h3><p><a href="buu-re-15/1.png">1</a><br>发现要一个登录密码，一开始猜想密码就是flag，然后拖入ida静态分析</p>
+<h3 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h3><p>进入主要函数，看到程序开始运行所显示的一些内容，随便下了个断点开始逐步分析</p>
+<p>一直到输入密码的地方，发现有个<code>strcmp</code>函数<br><img src="/2021/02/01/buu-re-15/2.png" alt="2"></p>
+<p>发现是与字符串<strong>HelloWorld</strong>作比较，再打开程序，验证密码，发现密码正确，进入一个新界面<br><img src="/2021/02/01/buu-re-15/3.png" alt="3"></p>
+<p>发现有个flag的东西，就尝试控制方向键选中flag打开</p>
+<p>得到一个所谓虚假的flag：<code>V2h5IGRvbid0IHlvdSB0cnkgdGhlIG1hZ2ljIGJyaWNrIGdhbWU=</code></p>
+<p>像是base64编码，解码后是一句话“Why don’t you try the magic brick game”</p>
+<p>砖块游戏？我便打开“打砖块”游戏,也没咋玩，过一会游戏结束flag显现<br><img src="/2021/02/01/buu-re-15/4.png" alt="4"><br>flag{f5dfd0f5-0343-4642-8f28-9adbb74c4ede}</p>
+<h2 id="网上别人的wp"><a href="#网上别人的wp" class="headerlink" title="网上别人的wp"></a>网上别人的wp</h2><p>看了别人wp才知道，正确flag是一个<strong>base58</strong>解码</p>
+<p><code>2i9Q8AtFJTfL3ahU2XGuemEqZJ2ensozjg1EjPJwCHy4RY1Nyvn1ZE1bZe</code></p>
+<p>转：<code>flag&#123;f5dfd0f5-0343-4642-8f28-9adbb74c4ede&#125;</code></p>
+<h3 id="base58编码算法的特征"><a href="#base58编码算法的特征" class="headerlink" title="base58编码算法的特征"></a>base58编码算法的特征</h3><p>这里记一下base58的特征，下次好认得</p>
+<h4 id="编码表"><a href="#编码表" class="headerlink" title="编码表"></a>编码表</h4><p><code>123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ</code></p>
+<p>无‘0’数字+大小写字母</p>
+<h4 id="编码步骤"><a href="#编码步骤" class="headerlink" title="编码步骤"></a>编码步骤</h4><p>ascii码（看成256进制）-&gt;转成10进制 -&gt;转成58进制 -&gt;对应编码表</p>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-02-01</p></div> 
+    <div class="post-meta__cats"><a href="/tags/buu/" class="post-tags__link button"># buu</a><a href="/tags/wp/" class="post-tags__link button"># wp</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/01/31/buu-re-13/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            buu-re-13
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+ 
+
+ 
+
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>
