@@ -37,23 +37,24 @@
 
     <!-- OpenGraph -->
  
-    <meta name="description" content="本来刷题是不打算再这么频繁地写博客的，可这题实在是太好玩了 我的解法检查无壳，32位 cmd运行试试1发现要一个登录密码，一开始猜想密码就是flag，然后拖入ida静态分析 静态分析进入主要函数，看到程序开始运行所显示的一些内容，随便下了个断点开始逐步分析 一直到输入密码的地方，发现有个strcmp函数 发现是与字符串HelloWorld作比较，再打开程序，验证密码，发现密码正确，进入一个新界面">
+    <meta name="description" content="本来刷题是不打算再这么频繁地写博客的，可这题实在是太好玩了 我的解法检查无壳，32位 cmd运行试试发现要一个登录密码，一开始猜想密码就是flag，然后拖入ida静态分析 静态分析进入主要函数，看到程序开始运行所显示的一些内容，随便下了个断点开始逐步分析 一直到输入密码的地方，发现有个strcmp函数 发现是与字符串HelloWorld作比较，再打开程序，验证密码，发现密码正确，进入一个新界面 发">
 <meta property="og:type" content="article">
 <meta property="og:title" content="buu-re-15">
 <meta property="og:url" content="https://majikoo1028.github.io/2021/02/01/buu-re-15/index.html">
 <meta property="og:site_name" content="Unbelievable">
-<meta property="og:description" content="本来刷题是不打算再这么频繁地写博客的，可这题实在是太好玩了 我的解法检查无壳，32位 cmd运行试试1发现要一个登录密码，一开始猜想密码就是flag，然后拖入ida静态分析 静态分析进入主要函数，看到程序开始运行所显示的一些内容，随便下了个断点开始逐步分析 一直到输入密码的地方，发现有个strcmp函数 发现是与字符串HelloWorld作比较，再打开程序，验证密码，发现密码正确，进入一个新界面">
+<meta property="og:description" content="本来刷题是不打算再这么频繁地写博客的，可这题实在是太好玩了 我的解法检查无壳，32位 cmd运行试试发现要一个登录密码，一开始猜想密码就是flag，然后拖入ida静态分析 静态分析进入主要函数，看到程序开始运行所显示的一些内容，随便下了个断点开始逐步分析 一直到输入密码的地方，发现有个strcmp函数 发现是与字符串HelloWorld作比较，再打开程序，验证密码，发现密码正确，进入一个新界面 发">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/02/01/buu-re-15/1.png">
 <meta property="og:image" content="https://majikoo1028.github.io/2021/02/01/buu-re-15/2.png">
 <meta property="og:image" content="https://majikoo1028.github.io/2021/02/01/buu-re-15/3.png">
 <meta property="og:image" content="https://majikoo1028.github.io/2021/02/01/buu-re-15/4.png">
 <meta property="article:published_time" content="2021-02-01T10:46:36.000Z">
-<meta property="article:modified_time" content="2021-02-01T11:28:18.852Z">
+<meta property="article:modified_time" content="2021-02-01T11:32:42.300Z">
 <meta property="article:author" content="Tobe.Unbelievable">
 <meta property="article:tag" content="buu">
 <meta property="article:tag" content="wp">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://majikoo1028.github.io/2021/02/01/buu-re-15/2.png">
+<meta name="twitter:image" content="https://majikoo1028.github.io/2021/02/01/buu-re-15/1.png">
 
 
     
@@ -179,7 +180,7 @@
     <div class="post__content">
         <p>本来刷题是不打算再这么频繁地写博客的，可这题实在是太好玩了</p>
 <h2 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h2><h3 id="检查"><a href="#检查" class="headerlink" title="检查"></a>检查</h3><p>无壳，32位</p>
-<h3 id="cmd运行试试"><a href="#cmd运行试试" class="headerlink" title="cmd运行试试"></a>cmd运行试试</h3><p><a href="buu-re-15/1.png">1</a><br>发现要一个登录密码，一开始猜想密码就是flag，然后拖入ida静态分析</p>
+<h3 id="cmd运行试试"><a href="#cmd运行试试" class="headerlink" title="cmd运行试试"></a>cmd运行试试</h3><p><img src="/2021/02/01/buu-re-15/1.png" alt="1"><br>发现要一个登录密码，一开始猜想密码就是flag，然后拖入ida静态分析</p>
 <h3 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h3><p>进入主要函数，看到程序开始运行所显示的一些内容，随便下了个断点开始逐步分析</p>
 <p>一直到输入密码的地方，发现有个<code>strcmp</code>函数<br><img src="/2021/02/01/buu-re-15/2.png" alt="2"></p>
 <p>发现是与字符串<strong>HelloWorld</strong>作比较，再打开程序，验证密码，发现密码正确，进入一个新界面<br><img src="/2021/02/01/buu-re-15/3.png" alt="3"></p>
