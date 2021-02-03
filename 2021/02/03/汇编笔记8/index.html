@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>汇编笔记8 | Unbelievable</title>
+
+
+    <meta name="keywords" content="汇编笔记">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="第十一章 标志寄存器标志寄存器（flag寄存器）在8086中结构如图 影响标志寄存器的大都是运算指令（逻辑和算数运算） 而传送指令（如mov push pop等）都不会影响标志寄存器 ps：inc 和dec 也不会影响标志寄存器 ZF（zero）零标志 结果为0时：zf&#x3D;1 结果为非0时：zf&#x3D;0  PF（parity）偶数标志 结果的二进制有偶数个1时：pf&#x3D;1 奇数时：pf&#x3D;0  SF（sig">
+<meta property="og:type" content="article">
+<meta property="og:title" content="汇编笔记8">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/02/03/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B08/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="第十一章 标志寄存器标志寄存器（flag寄存器）在8086中结构如图 影响标志寄存器的大都是运算指令（逻辑和算数运算） 而传送指令（如mov push pop等）都不会影响标志寄存器 ps：inc 和dec 也不会影响标志寄存器 ZF（zero）零标志 结果为0时：zf&#x3D;1 结果为非0时：zf&#x3D;0  PF（parity）偶数标志 结果的二进制有偶数个1时：pf&#x3D;1 奇数时：pf&#x3D;0  SF（sig">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/02/03/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B08/1.jpg">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/02/03/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B08/2.jpg">
+<meta property="article:published_time" content="2021-02-03T15:52:42.000Z">
+<meta property="article:modified_time" content="2021-02-03T16:30:47.600Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="汇编笔记">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://majikoo1028.github.io/2021/02/03/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B08/1.jpg">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        汇编笔记8
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/02/" class="post-meta__date button">2021-02-03</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0-%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">第十一章 标志寄存器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ZF%EF%BC%88zero%EF%BC%89%E9%9B%B6%E6%A0%87%E5%BF%97"><span class="toc-number">1.1.</span> <span class="toc-text">ZF（zero）零标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PF%EF%BC%88parity%EF%BC%89%E5%81%B6%E6%95%B0%E6%A0%87%E5%BF%97"><span class="toc-number">1.2.</span> <span class="toc-text">PF（parity）偶数标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SF%EF%BC%88sign%EF%BC%89%E8%B4%9F%E6%95%B0%E6%A0%87%E5%BF%97"><span class="toc-number">1.3.</span> <span class="toc-text">SF（sign）负数标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CF%EF%BC%88carry%EF%BC%89%E8%BF%9B%E4%BD%8D%EF%BC%88%E5%80%9F%E4%BD%8D%EF%BC%89%E6%A0%87%E5%BF%97"><span class="toc-number">1.4.</span> <span class="toc-text">CF（carry）进位（借位）标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OF%EF%BC%88overflow%EF%BC%89%E6%BA%A2%E5%87%BA%E6%A0%87%E5%BF%97"><span class="toc-number">1.5.</span> <span class="toc-text">OF（overflow）溢出标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DF%EF%BC%88direction%EF%BC%89%E6%96%B9%E5%90%91%E6%A0%87%E5%BF%97%E4%B8%8E%E4%B8%B2%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4"><span class="toc-number">1.6.</span> <span class="toc-text">DF（direction）方向标志与串传送指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#adc%E6%8C%87%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">adc指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sub%E6%8C%87%E4%BB%A4"><span class="toc-number">3.</span> <span class="toc-text">sub指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cmp-%E6%8C%87%E4%BB%A4%E4%B8%8Ej%E7%B1%BB%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4"><span class="toc-number">4.</span> <span class="toc-text">cmp 指令与j类跳转指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pushf-%E5%92%8C-popf"><span class="toc-number">5.</span> <span class="toc-text">pushf 和 popf</span></a></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0-%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">第十一章 标志寄存器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ZF%EF%BC%88zero%EF%BC%89%E9%9B%B6%E6%A0%87%E5%BF%97"><span class="toc-number">1.1.</span> <span class="toc-text">ZF（zero）零标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PF%EF%BC%88parity%EF%BC%89%E5%81%B6%E6%95%B0%E6%A0%87%E5%BF%97"><span class="toc-number">1.2.</span> <span class="toc-text">PF（parity）偶数标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SF%EF%BC%88sign%EF%BC%89%E8%B4%9F%E6%95%B0%E6%A0%87%E5%BF%97"><span class="toc-number">1.3.</span> <span class="toc-text">SF（sign）负数标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CF%EF%BC%88carry%EF%BC%89%E8%BF%9B%E4%BD%8D%EF%BC%88%E5%80%9F%E4%BD%8D%EF%BC%89%E6%A0%87%E5%BF%97"><span class="toc-number">1.4.</span> <span class="toc-text">CF（carry）进位（借位）标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OF%EF%BC%88overflow%EF%BC%89%E6%BA%A2%E5%87%BA%E6%A0%87%E5%BF%97"><span class="toc-number">1.5.</span> <span class="toc-text">OF（overflow）溢出标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DF%EF%BC%88direction%EF%BC%89%E6%96%B9%E5%90%91%E6%A0%87%E5%BF%97%E4%B8%8E%E4%B8%B2%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4"><span class="toc-number">1.6.</span> <span class="toc-text">DF（direction）方向标志与串传送指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#adc%E6%8C%87%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">adc指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sub%E6%8C%87%E4%BB%A4"><span class="toc-number">3.</span> <span class="toc-text">sub指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cmp-%E6%8C%87%E4%BB%A4%E4%B8%8Ej%E7%B1%BB%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4"><span class="toc-number">4.</span> <span class="toc-text">cmp 指令与j类跳转指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pushf-%E5%92%8C-popf"><span class="toc-number">5.</span> <span class="toc-text">pushf 和 popf</span></a></li></ol>
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h2 id="第十一章-标志寄存器"><a href="#第十一章-标志寄存器" class="headerlink" title="第十一章 标志寄存器"></a>第十一章 标志寄存器</h2><p>标志寄存器（flag寄存器）在8086中结构如图<br><img src="/2021/02/03/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B08/1.jpg" alt="1"></p>
+<p>影响标志寄存器的大都是运算指令（逻辑和算数运算）</p>
+<p>而传送指令（如mov push pop等）都不会影响标志寄存器</p>
+<p>ps：inc 和dec 也不会影响标志寄存器</p>
+<h3 id="ZF（zero）零标志"><a href="#ZF（zero）零标志" class="headerlink" title="ZF（zero）零标志"></a>ZF（zero）零标志</h3><ul>
+<li>结果为0时：zf=1</li>
+<li>结果为非0时：zf=0</li>
+</ul>
+<h3 id="PF（parity）偶数标志"><a href="#PF（parity）偶数标志" class="headerlink" title="PF（parity）偶数标志"></a>PF（parity）偶数标志</h3><ul>
+<li>结果的二进制有偶数个1时：pf=1</li>
+<li>奇数时：pf=0</li>
+</ul>
+<h3 id="SF（sign）负数标志"><a href="#SF（sign）负数标志" class="headerlink" title="SF（sign）负数标志"></a>SF（sign）负数标志</h3><ul>
+<li>结果为负时：sf=1</li>
+<li>结果为非负时：sf=0</li>
+</ul>
+<h3 id="CF（carry）进位（借位）标志"><a href="#CF（carry）进位（借位）标志" class="headerlink" title="CF（carry）进位（借位）标志"></a>CF（carry）进位（借位）标志</h3><p><strong>无符号运算</strong></p>
+<ul>
+<li>结果存在向最高位的更高位进位（借位）：cf=1</li>
+<li>没有进位（借位）：cf=0</li>
+</ul>
+<h3 id="OF（overflow）溢出标志"><a href="#OF（overflow）溢出标志" class="headerlink" title="OF（overflow）溢出标志"></a>OF（overflow）溢出标志</h3><p><strong>有符号运算</strong></p>
+<ul>
+<li>运算结果超过结果<strong>载体</strong>表示范围：of=1</li>
+<li>~ 没超过：of=0</li>
+</ul>
+<h3 id="DF（direction）方向标志与串传送指令"><a href="#DF（direction）方向标志与串传送指令" class="headerlink" title="DF（direction）方向标志与串传送指令"></a>DF（direction）方向标志与串传送指令</h3><p>DF标志在串处理指令中，控制每次操作后si、di的增减</p>
+<p>df=0：每次操作后si、di递增</p>
+<p>df=1：每次操作后si、di递减</p>
+<ul>
+<li><blockquote>
+<p>movsb（字节串传送）<br>实现的东西就相当于<br>mov es:[di],ds[si]   ;8086并不支持这样的指令<br>inc si     ;df=0<br>inc di     ;df=0</p>
+</blockquote>
+</li>
+<li><p>movsw（字型数据串传送） 类上</p>
+</li>
+</ul>
+<p>以上只是串传送的一个步骤，通常还要配合<strong>rep</strong>指令</p>
+<p>如：<code>rep movsb</code>就相当于</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s:movsb</span><br><span class="line">loop s</span><br></pre></td></tr></table></figure></div>
+<p>它的循环次数也由cx决定</p>
+<h2 id="adc指令"><a href="#adc指令" class="headerlink" title="adc指令"></a>adc指令</h2><p>操作格式：adc 对象1，对象2</p>
+<p>功能： 对象1=对象1+对象2+cf</p>
+<p>用来实现大数相加（可以处理进位）</p>
+<h2 id="sub指令"><a href="#sub指令" class="headerlink" title="sub指令"></a>sub指令</h2><p>操作格式：sbb 对象1，对象2</p>
+<p>功能： 对象1=对象1-对象2-cf</p>
+<p>用来实现大数相减（可以处理借位）和adc的作用意义类似</p>
+<h2 id="cmp-指令与j类跳转指令"><a href="#cmp-指令与j类跳转指令" class="headerlink" title="cmp 指令与j类跳转指令"></a>cmp 指令与j类跳转指令</h2><p>指令格式：cmp 对象1，对象2</p>
+<p>实质上就是计算<strong>对象1-对象2</strong>，只不过不保留运算结果，通常用来与j类跳转指令配合使用</p>
+<p>j类指令如下：</p>
+<p><img src="/2021/02/03/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B08/2.jpg" alt="2"></p>
+<h2 id="pushf-和-popf"><a href="#pushf-和-popf" class="headerlink" title="pushf 和 popf"></a>pushf 和 popf</h2><ul>
+<li>pushf：将flag寄存器的值压栈</li>
+<li>popf：将栈中的数据弹入到flag寄存器</li>
+</ul>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-02-04</p></div> 
+    <div class="post-meta__cats"><a href="/tags/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B0/" class="post-tags__link button"># 汇编笔记</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/02/02/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B07/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            汇编笔记7
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+ 
+
+ 
+
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>
