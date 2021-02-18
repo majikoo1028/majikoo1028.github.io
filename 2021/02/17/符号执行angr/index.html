@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>符号执行angr | Unbelievable</title>
+
+
+    <meta name="keywords" content="angr">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="前言记：又一个逆向神器——angr，详情参考官方文档，这里面的example是ctf的一些题例 然后这里是一些angr解题的题库，我还没做过,以后慢慢练习 一个简单的demo，应该能大致了解angr 一些example我自己也写了一个简单的demo，程序是这样的： 123456789101112131415161718192021222324252627#include&lt;stdio.h&amp;gt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="符号执行angr">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/02/17/%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8Cangr/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="前言记：又一个逆向神器——angr，详情参考官方文档，这里面的example是ctf的一些题例 然后这里是一些angr解题的题库，我还没做过,以后慢慢练习 一个简单的demo，应该能大致了解angr 一些example我自己也写了一个简单的demo，程序是这样的： 123456789101112131415161718192021222324252627#include&lt;stdio.h&amp;gt">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/02/17/%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8Cangr/1.png">
+<meta property="article:published_time" content="2021-02-17T09:13:23.000Z">
+<meta property="article:modified_time" content="2021-02-18T16:37:43.145Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="angr">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://majikoo1028.github.io/2021/02/17/%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8Cangr/1.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        符号执行angr
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/02/" class="post-meta__date button">2021-02-17</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9Bexample"><span class="toc-number">2.</span> <span class="toc-text">一些example</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#angr%E7%9A%84%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">angr的一些知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hook"><span class="toc-number">3.1.</span> <span class="toc-text">hook</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#find-%E5%92%8C-avoid"><span class="toc-number">3.2.</span> <span class="toc-text">find 和 avoid</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pie%E4%BF%9D%E6%8A%A4"><span class="toc-number">3.3.</span> <span class="toc-text">pie保护</span></a></li></ol></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9Bexample"><span class="toc-number">2.</span> <span class="toc-text">一些example</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#angr%E7%9A%84%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">angr的一些知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hook"><span class="toc-number">3.1.</span> <span class="toc-text">hook</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#find-%E5%92%8C-avoid"><span class="toc-number">3.2.</span> <span class="toc-text">find 和 avoid</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pie%E4%BF%9D%E6%8A%A4"><span class="toc-number">3.3.</span> <span class="toc-text">pie保护</span></a></li></ol></li></ol>
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记：又一个逆向神器——angr，详情参考<a target="_blank" rel="noopener" href="https://docs.angr.io/">官方文档</a>，这里面的example是ctf的一些题例</p>
+<p>然后这里是一些angr解题的<a target="_blank" rel="noopener" href="https://github.com/jakespringer/angr_ctf">题库</a>，我还没做过,以后慢慢练习</p>
+<p>一个简单的<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33438733/article/details/80276628">demo</a>，应该能大致了解angr</p>
+<h2 id="一些example"><a href="#一些example" class="headerlink" title="一些example"></a>一些example</h2><p>我自己也写了一个简单的demo，程序是这样的：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">success</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;success\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">failed</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;failed\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">change</span><span class="params">(<span class="keyword">char</span> name[],<span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (name[i]==<span class="string">&#x27;l&#x27;</span>) name[i]=<span class="string">&#x27;1&#x27;</span> ;</span><br><span class="line">	<span class="keyword">else</span> name[i]=<span class="string">&#x27;2&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> name[<span class="number">10</span>];</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;pls enter the name:&quot;</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,name);</span><br><span class="line">    change(name,<span class="number">2</span>);</span><br><span class="line">    change(name,<span class="number">3</span>);</span><br><span class="line">    change(name,<span class="number">8</span>);</span><br><span class="line">    <span class="keyword">if</span>(!<span class="built_in">strcmp</span>(name,<span class="string">&quot;he11owor1d&quot;</span>))&#123;</span><br><span class="line">        success();</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        failed();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>利用angr来跑，目的就是要让其执行到<strong>success</strong>处</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> angr</span><br><span class="line">p= angr.Project(<span class="string">r&#x27;\demo.exe&#x27;</span>,auto_load_libs=<span class="literal">False</span>)   <span class="comment"># 载入二进制文件，加上auto_load_libs=False 可以避免加载依赖库，减少分析工作量</span></span><br><span class="line">state=p.factory.entry_state()  <span class="comment"># 设置执行的开始地址</span></span><br><span class="line">                               <span class="comment"># .entry_state() 返回程序入口的state</span></span><br><span class="line">                               <span class="comment"># .blank_state(addr=...) 返回一个未初始化的state，即未进行任何操作的addr处</span></span><br><span class="line">                               <span class="comment"># full_init_state(**kwargs) 与entry_state()类似，不过会调用每个库的初始化函数</span></span><br><span class="line">s=p.factory.simulation_manager(state)  <span class="comment">#以该state建立一个模拟执行</span></span><br><span class="line">s.explore(find=<span class="number">0x40154a</span>,avoid=<span class="number">0x40154b</span>)  <span class="comment">#find要到达的地址，avoid不去的地址</span></span><br><span class="line">print(<span class="built_in">len</span>(s.found)) <span class="comment"># 可解路径的数量</span></span><br><span class="line">print(s.found[<span class="number">0</span>].posix.dumps(<span class="number">1</span>))  <span class="comment"># 到达第一个解的路径的所有标准输出</span></span><br><span class="line">print(s.found[<span class="number">0</span>].posix.dumps(<span class="number">0</span>))  <span class="comment"># 到达第一个解的所有标准输入</span></span><br></pre></td></tr></table></figure></div>
+<p>又一个example——<a target="_blank" rel="noopener" href="https://github.com/angr/angr-doc/tree/master/examples/defcon2016quals_baby-re">DEFCON 2016 quals baby-re</a></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> claripy</span><br><span class="line"><span class="keyword">import</span> angr</span><br><span class="line">p=angr.Project(<span class="string">r&#x27;.\baby-re&#x27;</span>,auto_load_libs=<span class="literal">False</span>)</span><br><span class="line">state=p.factory.blank_state(addr=<span class="number">0x4028e0</span>)</span><br><span class="line">flag_chars=[claripy.BVS(<span class="string">&#x27;flag_%d&#x27;</span>%i,<span class="number">32</span>) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">13</span>)]</span><br><span class="line"><span class="comment"># 用claripy.BVS创建符号变量，类似z3的BitVec，第一个参数是变量名，第二个参数是位宽</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">13</span>):</span><br><span class="line">    state.mem[state.regs.rsp+i*<span class="number">4</span>].dword = flag_chars[i]</span><br><span class="line"></span><br><span class="line">state.regs.rdi = state.regs.rsp     <span class="comment">#因为下面所设置的入口处之前rdi是存放所读入flag的地方，so把手动设置的输入赋给rdi</span></span><br><span class="line">s=p.factory.simulation_manager(state)</span><br><span class="line">s.one_active.options.add(angr.options.LAZY_SOLVES)</span><br><span class="line">s.explore(find=<span class="number">0x40293f</span>,aviod=<span class="number">0x402941</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(s.found)&gt;<span class="number">0</span>:</span><br><span class="line">    print(<span class="string">&#x27;get!&#x27;</span>)</span><br><span class="line">    flag=<span class="string">&#x27;&#x27;</span>.join(<span class="built_in">chr</span>(s.found[<span class="number">0</span>].solver.<span class="built_in">eval</span>(c)) <span class="keyword">for</span> c <span class="keyword">in</span> flag_chars)</span><br><span class="line">    print(flag)</span><br><span class="line"><span class="keyword">else</span>: print(<span class="string">&#x27;Oh no&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
+<h2 id="angr的一些知识点"><a href="#angr的一些知识点" class="headerlink" title="angr的一些知识点"></a>angr的一些知识点</h2><p>记得可能不全，可用性也不强，日后熟悉了再慢慢更新</p>
+<h3 id="hook"><a href="#hook" class="headerlink" title="hook"></a>hook</h3><ul>
+<li><strong>hook_symbol</strong>：angr提供hook一些库函数得接口，从而实现其功能，在angr/procedures中可以看到这些库</li>
+</ul>
+<p>例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">my_scanf</span>(<span class="params">angr.SimProcedure</span>):</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self, fmt, ptr</span>):</span> </span><br><span class="line">            self.state.mem[ptr].dword = flag_chars[self.state.<span class="built_in">globals</span>[<span class="string">&#x27;scanf_count&#x27;</span>]]</span><br><span class="line">            self.state.<span class="built_in">globals</span>[<span class="string">&#x27;scanf_count&#x27;</span>] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">proj.hook_symbol(<span class="string">&#x27;__isoc99_scanf&#x27;</span>, my_scanf(), replace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#################又或者是######################</span></span><br><span class="line"></span><br><span class="line">proj.hook_symbol(<span class="string">&#x27;printf&#x27;</span>,angr.SIM_PROCEDURES[<span class="string">&#x27;stubs&#x27;</span>][<span class="string">&#x27;ReturnUnconstrained&#x27;</span>](),replace=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>**hook(addr=xx,hook=hook_demo,length=xx)**：程序自定义的函数没法直接hook，但是可以hook调用这个函数的地址，然后以自己的逻辑写一个hook_demo，length是hook_demo后要跳过的指令的长度</li>
+</ul>
+<p>例：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PY"><figure class="iseeu highlight /py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_change</span>(<span class="params">state</span>):</span></span><br><span class="line">    print(<span class="string">&#x27;change hooked&#x27;</span>)</span><br><span class="line">    state.memory.rax=<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">proj.hook(<span class="number">0x4015cb</span>,hook=my_change,length=<span class="number">5</span>)</span><br></pre></td></tr></table></figure></div>
+<p>ps：hook的是一个state，自己实现hook_demo中的一切操作都是基于传递过来的state</p>
+<h3 id="find-和-avoid"><a href="#find-和-avoid" class="headerlink" title="find 和 avoid"></a>find 和 avoid</h3><p>关于expolor里的find和avoid，都是可以是list类型，也就是可以批量avoid（一般不会批量find吧..）</p>
+<p>而批量avoid的地址则可以通过idapython的提取出来，这个关于idapython，就迟些学了再记</p>
+<h3 id="pie保护"><a href="#pie保护" class="headerlink" title="pie保护"></a>pie保护</h3><p>pie保护的程序，每次运行时的地址都会有变化，就像这样<br><img src="/2021/02/17/%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8Cangr/1.png" alt="1"></p>
+<p>但<strong>在angr中，程序的基址是固定在0x400000处的</strong></p>
+<p>所以在相关地址提取的时候加上0x400000即可</p>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-02-19</p></div> 
+    <div class="post-meta__cats"><a href="/tags/angr/" class="post-tags__link button"># angr</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/02/14/buu-re-54/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            buu-re-54
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.css">
+
+    
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.js"></script>
+
+    <script>
+        let lazyloadT = Boolean('false'),
+            auto_fancybox = Boolean('true')
+        if (auto_fancybox) {
+            $(".post__content").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        } else {
+            $(".post__content").find("fancybox").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        }
+    </script>
+ 
+
+ 
+
+ 
+
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>
