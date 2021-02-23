@@ -46,7 +46,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://majikoo1028.github.io/2021/02/17/%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8Cangr/1.png">
 <meta property="article:published_time" content="2021-02-17T09:13:23.000Z">
-<meta property="article:modified_time" content="2021-02-18T16:44:43.575Z">
+<meta property="article:modified_time" content="2021-02-23T04:32:06.365Z">
 <meta property="article:author" content="Tobe.Unbelievable">
 <meta property="article:tag" content="angr">
 <meta name="twitter:card" content="summary_large_image">
@@ -193,13 +193,16 @@
 <p>ps：hook的是一个state，自己实现hook_demo中的一切操作都是基于传递过来的state</p>
 <h3 id="find-和-avoid"><a href="#find-和-avoid" class="headerlink" title="find 和 avoid"></a>find 和 avoid</h3><p>关于expolor里的find和avoid，都是可以是list类型，也就是可以批量avoid（一般不会批量find吧..）</p>
 <p>而批量avoid的地址则可以通过idapython的提取出来，这个关于idapython，就迟些学了再记</p>
+<p>还有一个比较好用的find的方法：直接以标准输出中的<strong>关键字符串</strong>为目标去find</p>
+<p>就像这样<code>s.explore(find=lambda st: b&quot;Congrats&quot; in st.posix.dumps(1))</code></p>
 <h3 id="pie保护"><a href="#pie保护" class="headerlink" title="pie保护"></a>pie保护</h3><p>pie保护的程序，每次运行时的地址都会有变化，就像这样<br><img src="/2021/02/17/%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8Cangr/1.png" alt="1"></p>
 <p>但<strong>在angr中，程序的基址是固定在0x400000处的</strong></p>
 <p>所以在相关地址提取的时候加上0x400000即可</p>
+<p>PS:但是ida加载的时候，每次动调之后地址都会变，所以只能参考第一次刚加载进ida时的地址</p>
 
     </div>
      
-    <div class="post-footer__meta"><p>updated at 2021-02-19</p></div> 
+    <div class="post-footer__meta"><p>updated at 2021-02-23</p></div> 
     <div class="post-meta__cats"><a href="/tags/angr/" class="post-tags__link button"># angr</a></div> 
 </article>
 
