@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>DASCTF三月赛 | Unbelievable</title>
+
+
+    <meta name="keywords" content="wp, DASCTF">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="drinkSomeTea题目本身不难，就是一个tea加密，但是用python写这个脚本属实是坑多，给折磨了好久 主要的坑 python 的右移运算符 &gt;&gt; 是逻辑右移（左补0），c语言里的 &gt;&gt; 是算数右移（左补符号位） 文件读写的大端序小端序的问题，也借此简单学习了一下python的struct库  以后遇见这种文件读写的题目还是用c写吧，害 分析通过下面这里fake_f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DASCTF三月赛">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/03/29/DASCTF%E4%B8%89%E6%9C%88%E8%B5%9B/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="drinkSomeTea题目本身不难，就是一个tea加密，但是用python写这个脚本属实是坑多，给折磨了好久 主要的坑 python 的右移运算符 &gt;&gt; 是逻辑右移（左补0），c语言里的 &gt;&gt; 是算数右移（左补符号位） 文件读写的大端序小端序的问题，也借此简单学习了一下python的struct库  以后遇见这种文件读写的题目还是用c写吧，害 分析通过下面这里fake_f">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/03/29/DASCTF%E4%B8%89%E6%9C%88%E8%B5%9B/1.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/03/29/DASCTF%E4%B8%89%E6%9C%88%E8%B5%9B/2.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/03/29/DASCTF%E4%B8%89%E6%9C%88%E8%B5%9B/3.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/03/29/DASCTF%E4%B8%89%E6%9C%88%E8%B5%9B/4.png">
+<meta property="article:published_time" content="2021-03-29T06:55:00.000Z">
+<meta property="article:modified_time" content="2021-03-29T11:26:32.166Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="wp">
+<meta property="article:tag" content="DASCTF">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://majikoo1028.github.io/2021/03/29/DASCTF%E4%B8%89%E6%9C%88%E8%B5%9B/1.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        DASCTF三月赛
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/03/" class="post-meta__date button">2021-03-29</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#drinkSomeTea"><span class="toc-number">1.</span> <span class="toc-text">drinkSomeTea</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E7%9A%84%E5%9D%91"><span class="toc-number">1.1.</span> <span class="toc-text">主要的坑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">1.2.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#exp"><span class="toc-number">1.3.</span> <span class="toc-text">exp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E5%B0%8F%E6%8A%80%E5%B7%A7"><span class="toc-number">1.4.</span> <span class="toc-text">一个小技巧</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Enjoyit-1"><span class="toc-number">2.</span> <span class="toc-text">Enjoyit-1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90-1"><span class="toc-number">2.1.</span> <span class="toc-text">分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#replace"><span class="toc-number">3.</span> <span class="toc-text">replace</span></a></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#drinkSomeTea"><span class="toc-number">1.</span> <span class="toc-text">drinkSomeTea</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E7%9A%84%E5%9D%91"><span class="toc-number">1.1.</span> <span class="toc-text">主要的坑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">1.2.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#exp"><span class="toc-number">1.3.</span> <span class="toc-text">exp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E5%B0%8F%E6%8A%80%E5%B7%A7"><span class="toc-number">1.4.</span> <span class="toc-text">一个小技巧</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Enjoyit-1"><span class="toc-number">2.</span> <span class="toc-text">Enjoyit-1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90-1"><span class="toc-number">2.1.</span> <span class="toc-text">分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#replace"><span class="toc-number">3.</span> <span class="toc-text">replace</span></a></li></ol>
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h2 id="drinkSomeTea"><a href="#drinkSomeTea" class="headerlink" title="drinkSomeTea"></a>drinkSomeTea</h2><p>题目本身不难，就是一个tea加密，但是用python写这个脚本属实是坑多，给折磨了好久</p>
+<h3 id="主要的坑"><a href="#主要的坑" class="headerlink" title="主要的坑"></a>主要的坑</h3><ul>
+<li>python 的右移运算符 &gt;&gt; 是逻辑右移（左补0），c语言里的 &gt;&gt; 是算数右移（左补符号位）</li>
+<li>文件读写的大端序小端序的问题，也借此简单学习了一下python的<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_30638831/article/details/80421019">struct库</a></li>
+</ul>
+<p>以后遇见这种文件读写的题目还是用c写吧，害</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>通过下面这里fake_flag在内存中的排放可知，这个程序是小端序的，所以写脚本的时候也要注意小端序输出字节流</p>
+<p><img src="/2021/03/29/DASCTF%E4%B8%89%E6%9C%88%E8%B5%9B/1.png" alt="1"></p>
+<p>然后看一下加密的核心源码（润色后的）</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> *__cdecl <span class="title">enc_fuc</span><span class="params">(<span class="keyword">int</span> *pfile, _DWORD *fake_flag)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> *result; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">int</span> p0; <span class="comment">// [esp+Ch] [ebp-14h]</span></span><br><span class="line">  <span class="keyword">int</span> i; <span class="comment">// [esp+14h] [ebp-Ch]</span></span><br><span class="line">  <span class="keyword">int</span> key; <span class="comment">// [esp+18h] [ebp-8h]</span></span><br><span class="line">  <span class="keyword">int</span> p1; <span class="comment">// [esp+1Ch] [ebp-4h]</span></span><br><span class="line"></span><br><span class="line">  key = <span class="number">0</span>;</span><br><span class="line">  p1 = pfile[<span class="number">1</span>];</span><br><span class="line">  p0 = *pfile;                                  <span class="comment">// 每次对8个字节进行修改</span></span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; <span class="number">32</span>; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    key -= <span class="number">0x61C88647</span>;</span><br><span class="line">    p0 += (fake_flag[<span class="number">1</span>] + (p1 &gt;&gt; <span class="number">5</span>)) ^ (key + p1) ^ (*fake_flag + <span class="number">16</span> * p1);</span><br><span class="line">    p1 += (fake_flag[<span class="number">3</span>] + (p0 &gt;&gt; <span class="number">5</span>)) ^ (key + p0) ^ (fake_flag[<span class="number">2</span>] + <span class="number">16</span> * p0);</span><br><span class="line">  &#125;</span><br><span class="line">  pfile[<span class="number">1</span>] = p1;</span><br><span class="line">  result = pfile;</span><br><span class="line">  *pfile = p0;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><p>直接放解密脚本吧（python），里面的算数右移函数是抄的Mas0n师傅的脚本</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sar</span>(<span class="params">DWORD=<span class="number">0</span>, num=<span class="number">0</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    python没有算数右移，笨办法模拟了一下算数右移</span></span><br><span class="line"><span class="string">    :param DWORD: 四字节 整数</span></span><br><span class="line"><span class="string">    :param num:右移量</span></span><br><span class="line"><span class="string">    :return:移位后整数</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    binWORD = <span class="built_in">bin</span>(DWORD)  <span class="comment"># 四字节转二进制</span></span><br><span class="line">    signbit = binWORD[<span class="number">2</span>:<span class="number">3</span>]  <span class="comment"># 取符号位</span></span><br><span class="line">    DWORD = DWORD &gt;&gt; num  <span class="comment"># 逻辑右移</span></span><br><span class="line">    <span class="keyword">if</span> signbit == <span class="number">0</span> <span class="keyword">or</span> <span class="built_in">len</span>(binWORD[<span class="number">2</span>:]) != <span class="number">32</span>:  <span class="comment"># 高位为 0 或 不足32位</span></span><br><span class="line">        <span class="keyword">return</span> DWORD  <span class="comment"># 直接返回右移结果</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        bit = [<span class="string">&quot;1&quot;</span>] * num  <span class="comment"># 高位 补num位 1</span></span><br><span class="line">        DWORD = <span class="string">&quot;0b&quot;</span> + <span class="string">&quot;&quot;</span>.join(bit) + <span class="built_in">bin</span>(DWORD).replace(<span class="string">&#x27;0b&#x27;</span>, <span class="string">&#x27;&#x27;</span>).zfill(<span class="number">8</span>)  <span class="comment"># 组合成二进制形式</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">int</span>(DWORD, <span class="number">2</span>)  <span class="comment"># 转整数</span></span><br><span class="line"></span><br><span class="line">filein=<span class="built_in">open</span>(<span class="string">&#x27;tea.png.out&#x27;</span>, mode=<span class="string">&#x27;rb&#x27;</span>)</span><br><span class="line">fileout=<span class="built_in">open</span>(<span class="string">&#x27;tea.png&#x27;</span>, mode=<span class="string">&#x27;wb&#x27;</span>)</span><br><span class="line">file_thing=filein.read()</span><br><span class="line">v8=<span class="built_in">len</span>(file_thing)</span><br><span class="line"></span><br><span class="line">flag=<span class="string">b&#x27;&#x27;</span></span><br><span class="line"><span class="comment">#fake = &#x27;flag&#123;fake_flag!&#125;&#x27;  # 16个字节</span></span><br><span class="line">fake = [<span class="number">1734437990</span>, <span class="number">1801545339</span>, <span class="number">1818648421</span>, <span class="number">2099341153</span>]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(v8 // <span class="number">8</span>):</span><br><span class="line">    p0=file_thing[<span class="number">8</span>*i] | file_thing[<span class="number">8</span>*i+<span class="number">1</span>] &lt;&lt; <span class="number">8</span> | file_thing[<span class="number">8</span>*i+<span class="number">2</span>] &lt;&lt; <span class="number">16</span> | file_thing[<span class="number">8</span>*i+<span class="number">3</span>] &lt;&lt;<span class="number">24</span></span><br><span class="line">    p1=file_thing[<span class="number">8</span>*i+<span class="number">4</span>] | file_thing[<span class="number">8</span>*i+<span class="number">5</span>] &lt;&lt; <span class="number">8</span> | file_thing[<span class="number">8</span>*i+<span class="number">6</span>] &lt;&lt; <span class="number">16</span> | file_thing[<span class="number">8</span>*i+<span class="number">7</span>] &lt;&lt;<span class="number">24</span></span><br><span class="line">    key=<span class="number">0xc6ef3720</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">32</span>):</span><br><span class="line">        p1 -= (fake[<span class="number">3</span>] + sar(p0, <span class="number">5</span>)) ^ (key + p0) ^ (fake[<span class="number">2</span>] + <span class="number">16</span> * p0)</span><br><span class="line">        p1 = p1 &amp; <span class="number">0xffffffff</span></span><br><span class="line">        p0 -= (fake[<span class="number">1</span>] + sar(p1, <span class="number">5</span>)) ^ (key + p1) ^ (fake[<span class="number">0</span>] + <span class="number">16</span> * p1)</span><br><span class="line">        p0 = p0 &amp; <span class="number">0xffffffff</span></span><br><span class="line">        key -= <span class="number">0x9e3779b9</span></span><br><span class="line">        key = key &amp; <span class="number">0xffffffff</span></span><br><span class="line"></span><br><span class="line">    flag += struct.pack(<span class="string">&#x27;&lt;I&#x27;</span>,p0)</span><br><span class="line">    flag += struct.pack(<span class="string">&#x27;&lt;I&#x27;</span>,p1)</span><br><span class="line"></span><br><span class="line">fileout.close()</span><br><span class="line">filein.close()</span><br></pre></td></tr></table></figure></div>
+<p><img src="/2021/03/29/DASCTF%E4%B8%89%E6%9C%88%E8%B5%9B/2.png" alt="2"></p>
+<h3 id="一个小技巧"><a href="#一个小技巧" class="headerlink" title="一个小技巧"></a>一个小技巧</h3><p>一般常见格式的文件，像这次这种png，他都有一些固定的文件头，可以观察正确格式下对应文件的文件头来辅助逆向分析</p>
+<h2 id="Enjoyit-1"><a href="#Enjoyit-1" class="headerlink" title="Enjoyit-1"></a>Enjoyit-1</h2><p>这题其实蛮简单，边吃饭边看，吃完饭就出解了</p>
+<h3 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h3><p>是c#写的，拖进dnSpy，贴一下主要逻辑代码</p>
+<p><img src="/2021/03/29/DASCTF%E4%B8%89%E6%9C%88%E8%B5%9B/3.png" alt="3"></p>
+<ol>
+<li>先是一个魔改了编码表的base64加密后密文的判断</li>
+<li>然后中间具体的先不看，密文判断完后，有一个很长的sleep（图中只sleep了1秒，原来好像是10w秒来着，直接给他改了），然后好像是输出正确flag</li>
+<li>修改一下源码，保存，再运行，flag直接出，关键的解密逻辑甚至看都不用看</li>
+</ol>
+<p><img src="/2021/03/29/DASCTF%E4%B8%89%E6%9C%88%E8%B5%9B/4.png" alt="4"></p>
+<h2 id="replace"><a href="#replace" class="headerlink" title="replace"></a>replace</h2><p>虽然说这题难度标的是困难，但给我的感觉倒不是最难的，那道扫雷到现在我都还一点头绪没有2333（稍微玩了一下，应该是少了一行，没法全扫光）</p>
+<p>说回这道题目，一开始没去管太多，看到一个异或加密，直接写个脚本跑一下，好家伙果然是fake flag hhh</p>
+<p>然后再仔细分析了下，发现一些反调试和花指令，去花之后真正的逻辑就容易看出来了</p>
+<p>这题没什么太多新东西，就直接贴脚本了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">text = [<span class="number">39</span>, <span class="number">3</span>, <span class="number">10</span>, <span class="number">118</span>, <span class="number">30</span>, <span class="number">26</span>, <span class="number">54</span>, <span class="number">46</span>, <span class="number">73</span>, <span class="number">46</span>, <span class="number">48</span>, <span class="number">28</span>, <span class="number">118</span>, <span class="number">28</span>, <span class="number">95</span>, <span class="number">99</span>, <span class="number">86</span>, <span class="number">40</span>, <span class="number">19</span>, <span class="number">105</span>, <span class="number">116</span>, <span class="number">95</span>, <span class="number">31</span>, <span class="number">85</span>]</span><br><span class="line">print(<span class="built_in">len</span>(text))</span><br><span class="line">text2 = [<span class="number">0x41</span>, <span class="number">0x6f</span>, <span class="number">0x6b</span>, <span class="number">0x11</span>, <span class="number">0x65</span>, <span class="number">0x49</span>, <span class="number">0x43</span>, <span class="number">0x5c</span>, <span class="number">0x2c</span>, <span class="number">0x0f</span>, <span class="number">0x11</span>, <span class="number">0x43</span>, <span class="number">0x17</span>, <span class="number">0x43</span>, <span class="number">0x39</span>, <span class="number">0x02</span>, <span class="number">0x3d</span>, <span class="number">0x4d</span>,</span><br><span class="line">         <span class="number">0x4c</span>, <span class="number">0x0f</span>, <span class="number">0x18</span>, <span class="number">0x3e</span>, <span class="number">0x78</span>, <span class="number">0x28</span>]</span><br><span class="line">chars2 = [<span class="number">128</span>, <span class="number">101</span>, <span class="number">47</span>, <span class="number">52</span>, <span class="number">18</span>, <span class="number">55</span>, <span class="number">125</span>, <span class="number">64</span>, <span class="number">38</span>, <span class="number">22</span>, <span class="number">75</span>, <span class="number">77</span>, <span class="number">85</span>, <span class="number">67</span>, <span class="number">92</span>, <span class="number">23</span>, <span class="number">63</span>, <span class="number">105</span>, <span class="number">121</span>, <span class="number">83</span>, <span class="number">24</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">97</span>, <span class="number">39</span>, <span class="number">8</span>, <span class="number">73</span>,</span><br><span class="line">         <span class="number">74</span>, <span class="number">100</span>, <span class="number">35</span>, <span class="number">86</span>, <span class="number">91</span>, <span class="number">111</span>, <span class="number">17</span>, <span class="number">79</span>, <span class="number">20</span>, <span class="number">4</span>, <span class="number">30</span>, <span class="number">94</span>, <span class="number">45</span>, <span class="number">42</span>, <span class="number">50</span>, <span class="number">43</span>, <span class="number">108</span>, <span class="number">116</span>, <span class="number">9</span>, <span class="number">110</span>, <span class="number">66</span>, <span class="number">112</span>, <span class="number">90</span>, <span class="number">113</span>, <span class="number">28</span>, <span class="number">123</span>,</span><br><span class="line">         <span class="number">44</span>, <span class="number">117</span>, <span class="number">84</span>, <span class="number">48</span>, <span class="number">126</span>, <span class="number">95</span>, <span class="number">14</span>, <span class="number">1</span>, <span class="number">70</span>, <span class="number">29</span>, <span class="number">32</span>, <span class="number">60</span>, <span class="number">102</span>, <span class="number">107</span>, <span class="number">118</span>, <span class="number">99</span>, <span class="number">71</span>, <span class="number">106</span>, <span class="number">41</span>, <span class="number">37</span>, <span class="number">78</span>, <span class="number">49</span>, <span class="number">19</span>, <span class="number">80</span>, <span class="number">81</span>, <span class="number">51</span>,</span><br><span class="line">         <span class="number">89</span>, <span class="number">26</span>, <span class="number">93</span>, <span class="number">68</span>, <span class="number">62</span>, <span class="number">40</span>, <span class="number">15</span>, <span class="number">25</span>, <span class="number">46</span>, <span class="number">5</span>, <span class="number">98</span>, <span class="number">76</span>, <span class="number">58</span>, <span class="number">33</span>, <span class="number">69</span>, <span class="number">31</span>, <span class="number">56</span>, <span class="number">127</span>, <span class="number">87</span>, <span class="number">61</span>, <span class="number">27</span>, <span class="number">59</span>, <span class="number">36</span>, <span class="number">65</span>, <span class="number">119</span>, <span class="number">109</span>, <span class="number">122</span>,</span><br><span class="line">         <span class="number">82</span>, <span class="number">115</span>, <span class="number">7</span>, <span class="number">16</span>, <span class="number">53</span>, <span class="number">10</span>, <span class="number">13</span>, <span class="number">3</span>, <span class="number">11</span>, <span class="number">72</span>, <span class="number">103</span>, <span class="number">21</span>, <span class="number">120</span>, <span class="number">12</span>, <span class="number">96</span>, <span class="number">57</span>, <span class="number">54</span>, <span class="number">34</span>, <span class="number">124</span>, <span class="number">88</span>, <span class="number">114</span>, <span class="number">104</span>]</span><br><span class="line">tmp=[]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):</span><br><span class="line">    tmp.append(text2[i])</span><br><span class="line">    tmp.append(text2[i+<span class="number">4</span>])</span><br><span class="line">    tmp.append(text2[i+<span class="number">8</span>])</span><br><span class="line">    tmp.append(text2[i+<span class="number">12</span>])</span><br><span class="line">    tmp.append(text2[i+<span class="number">16</span>])</span><br><span class="line">    tmp.append(text2[i+<span class="number">20</span>])</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(tmp)):</span><br><span class="line">    print(<span class="built_in">hex</span>(tmp[i]),<span class="string">&#x27;,&#x27;</span>,end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">print()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">24</span>):</span><br><span class="line">        tmp[j] = chars2.index(tmp[j])</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">24</span>):</span><br><span class="line">    print(<span class="built_in">chr</span>(tmp[i]),end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">print()</span><br><span class="line"></span><br><span class="line"><span class="comment"># for i in range(24):</span></span><br><span class="line"><span class="comment">#    print(chr(text2[i] ^ text[i]),end=&#x27;&#x27;)</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>flag{Sh1t_you_dec0d3_it}</p>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-03-29</p></div> 
+    <div class="post-meta__cats"><a href="/tags/wp/" class="post-tags__link button"># wp</a><a href="/tags/DASCTF/" class="post-tags__link button"># DASCTF</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/03/15/filpgame/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            filpgame
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.css">
+
+    
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.js"></script>
+
+    <script>
+        let lazyloadT = Boolean('false'),
+            auto_fancybox = Boolean('true')
+        if (auto_fancybox) {
+            $(".post__content").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        } else {
+            $(".post__content").find("fancybox").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        }
+    </script>
+ 
+
+ 
+
+ 
+
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>
