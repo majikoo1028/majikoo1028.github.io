@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>buu-re-79 | Unbelievable</title>
+
+
+    <meta name="keywords" content="buu, wp, SMC, AES, 分组加密">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="[SCTF2019]creakme前言小结一下这题考察的几个知识点：  SMC及其恢复patch AES加解密 分组密码模式判断 基础base64编码  分析一开始就发现了内存中有一段奇怪的code，结合调用处信息，基本可以判断是一个SMC但是我一直没找到修改这段code的地方..后来参考了一下WP，说是SMC的代码在sub_402450那么问题又来了，如何在哪里调用了这个函数？又是怎么传参的？W">
+<meta property="og:type" content="article">
+<meta property="og:title" content="buu-re-79">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/03/30/buu-re-79/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="[SCTF2019]creakme前言小结一下这题考察的几个知识点：  SMC及其恢复patch AES加解密 分组密码模式判断 基础base64编码  分析一开始就发现了内存中有一段奇怪的code，结合调用处信息，基本可以判断是一个SMC但是我一直没找到修改这段code的地方..后来参考了一下WP，说是SMC的代码在sub_402450那么问题又来了，如何在哪里调用了这个函数？又是怎么传参的？W">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/03/30/buu-re-79/1.png">
+<meta property="article:published_time" content="2021-03-30T00:48:27.000Z">
+<meta property="article:modified_time" content="2021-03-30T05:57:14.458Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="buu">
+<meta property="article:tag" content="wp">
+<meta property="article:tag" content="SMC">
+<meta property="article:tag" content="AES">
+<meta property="article:tag" content="分组加密">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://majikoo1028.github.io/2021/03/30/buu-re-79/1.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        buu-re-79
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/03/" class="post-meta__date button">2021-03-30</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#exp"><span class="toc-number">3.</span> <span class="toc-text">exp</span></a></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#exp"><span class="toc-number">3.</span> <span class="toc-text">exp</span></a></li></ol>
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h1 id="SCTF2019-creakme"><a href="#SCTF2019-creakme" class="headerlink" title="[SCTF2019]creakme"></a>[SCTF2019]creakme</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>小结一下这题考察的几个知识点：</p>
+<ul>
+<li>SMC及其恢复patch</li>
+<li>AES加解密</li>
+<li>分组密码模式判断</li>
+<li>基础base64编码</li>
+</ul>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>一开始就发现了内存中有一段奇怪的code，结合调用处信息，基本可以判断是一个SMC<br>但是我一直没找到修改这段code的地方..后来参考了一下WP，说是SMC的代码在<code>sub_402450</code><br>那么问题又来了，如何在哪里调用了这个函数？又是怎么传参的？<br>WP里面说是附加在调试器下调用的，我又去看了看汇编代码，理了下逻辑：</p>
+<ul>
+<li>edx(a1)传入要修改的总字节长度（但是怎么给edx赋的值还没弄懂..）</li>
+<li>ecx(a2)传入要修改的起始地址</li>
+</ul>
+<p>修改的过程伪代码很容易看明白，贴一下恢复的exp</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">st=<span class="number">0x404000</span></span><br><span class="line">key=<span class="string">b&#x27;sycloversyclover&#x27;</span></span><br><span class="line">length=<span class="built_in">len</span>(key)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">512</span>):</span><br><span class="line">    ch=get_wide_byte(st)</span><br><span class="line">    tmp=ch ^ key[i % length]</span><br><span class="line">    tmp = ~tmp</span><br><span class="line">    patch_byte(st,tmp)</span><br><span class="line">    st += <span class="number">1</span></span><br></pre></td></tr></table></figure></div>
+<p>然后对应对应地址 <code>c</code> 一下 <code>p</code> 一下 <code>f5</code>一下，被隐藏起来的代码就出来了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">sub_404000</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i; <span class="comment">// edx</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> v1; <span class="comment">// esi</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> result; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">int</span> v3; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">char</span> v4; <span class="comment">// dl</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(text); ++i )</span><br><span class="line">    --text[i];</span><br><span class="line">  v1 = <span class="number">0</span>;</span><br><span class="line">  result = <span class="built_in">strlen</span>(text);</span><br><span class="line">  <span class="keyword">if</span> ( (result &amp; <span class="number">0xFFFFFFFE</span>) != <span class="number">0</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">      v3 = result - v1;</span><br><span class="line">      v4 = *(_BYTE *)(v3 + <span class="number">4231191</span>);</span><br><span class="line">      *(_BYTE *)(v3 + <span class="number">4231191</span>) = text[v1];</span><br><span class="line">      text[v1++] = v4;</span><br><span class="line">      result = <span class="built_in">strlen</span>(text);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> ( v1 &lt; result &gt;&gt; <span class="number">1</span> );</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>text原来是``</p>
+<p>就是text[i]偏移后，再逆序变为  </p>
+<p><code>nKnbHsgqD3aNEB91jB3gEzAr+IklQwT1bSs3+bXpeuo=</code></p>
+<p>然后用<strong>Findcrypt插件</strong>扫一下，发现有base64和AES加密</p>
+<p>再看主函数，主要的加密逻辑在<code>sub_4020D0</code>里  </p>
+<ol>
+<li>AES_CBC（CBC模式从AES加密函数中有个像是偏移量的变量<code>sctfsctfsctfsctf</code>;<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/79a225c2650e">分组加密的各个模式的区别在这</a>）</li>
+<li>然后再一个base64编码</li>
+</ol>
+<p>逆向的话反过来就行</p>
+<h2 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SMC</span></span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"></span><br><span class="line">text=<span class="string">&#x27;&gt;pvfqYc,4tTc2UxRmlJ,sB&#123;Fh4Ck2:CFOb4ErhtIcoLo&#x27;</span></span><br><span class="line">text2=<span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> text:</span><br><span class="line">    text2 += <span class="built_in">chr</span>(<span class="built_in">ord</span>(i)-<span class="number">1</span>)</span><br><span class="line">print(text2[::-<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">text3 = <span class="string">b&#x27;nKnbHsgqD3aNEB91jB3gEzAr+IklQwT1bSs3+bXpeuo=&#x27;</span></span><br><span class="line">text4 = base64.b64decode(text3)</span><br><span class="line">key = <span class="string">b&#x27;sycloversyclover&#x27;</span></span><br><span class="line">iv = <span class="string">b&#x27;sctfsctfsctfsctf&#x27;</span></span><br><span class="line">aes = AES.new(key,mode=AES.MODE_CBC,iv=iv)   <span class="comment"># AES_CBC有个偏移iv</span></span><br><span class="line">print(aes.decrypt(text4))</span><br></pre></td></tr></table></figure></div>
+<p>这个<a target="_blank" rel="noopener" href="http://tool.chacuo.net/cryptaes">网站</a>也可以解<br><img src="/2021/03/30/buu-re-79/1.png" alt="1"></p>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-03-30</p></div> 
+    <div class="post-meta__cats"><a href="/tags/buu/" class="post-tags__link button"># buu</a><a href="/tags/wp/" class="post-tags__link button"># wp</a><a href="/tags/SMC/" class="post-tags__link button"># SMC</a><a href="/tags/AES/" class="post-tags__link button"># AES</a><a href="/tags/%E5%88%86%E7%BB%84%E5%8A%A0%E5%AF%86/" class="post-tags__link button"># 分组加密</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/03/29/DASCTF%E4%B8%89%E6%9C%88%E8%B5%9B/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            DASCTF三月赛
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.css">
+
+    
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.js"></script>
+
+    <script>
+        let lazyloadT = Boolean('false'),
+            auto_fancybox = Boolean('true')
+        if (auto_fancybox) {
+            $(".post__content").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        } else {
+            $(".post__content").find("fancybox").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        }
+    </script>
+ 
+
+ 
+
+ 
+
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>
