@@ -44,25 +44,25 @@
 <meta property="og:site_name" content="Unbelievable">
 <meta property="og:description" content="MRCTF-EzGame前言这是道U3D的游戏逆向，用借着这道题把Cheat Engine“游戏作弊”以及配合dump内存分析的方法思路给大致过了一遍，还挺有意思的 关于分析Unity 3dU3D的主要逻辑一般在Assembly-CSharp.dll文件里，可以拖入dnspy里找关键的逻辑代码 PS：C#的string默认字符编码是Unicode，这点要注意，昨天也是一道u3d的题目，里面加密算法">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source/_posts/MRCTF-EzGame/1.png">
-<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source/_posts/MRCTF-EzGame/2.png">
-<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source/_posts/MRCTF-EzGame/3.png">
-<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source/_posts/MRCTF-EzGame/4.png">
-<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source/_posts/MRCTF-EzGame/5.png">
-<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source/_posts/MRCTF-EzGame/6.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source_posts/MRCTF-EzGame/1.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source_posts/MRCTF-EzGame/2.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source_posts/MRCTF-EzGame/3.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source_posts/MRCTF-EzGame/4.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source_posts/MRCTF-EzGame/5.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source_posts/MRCTF-EzGame/6.png">
 <meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source_posts/MRCTF-EzGame/7.png">
 <meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source_posts/MRCTF-EzGame/8.png">
-<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source/_posts/MRCTF-EzGame/9.png">
-<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source/_posts/MRCTF-EzGame/10.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source_posts/MRCTF-EzGame/9.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source_posts/MRCTF-EzGame/10.png">
 <meta property="og:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source_posts/MRCTF-EzGame/11.png">
 <meta property="article:published_time" content="2021-04-20T03:05:58.000Z">
-<meta property="article:modified_time" content="2021-04-20T14:35:11.829Z">
+<meta property="article:modified_time" content="2021-04-21T01:35:15.494Z">
 <meta property="article:author" content="Tobe.Unbelievable">
 <meta property="article:tag" content="wp">
 <meta property="article:tag" content="MRCTF">
 <meta property="article:tag" content="CE使用">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source/_posts/MRCTF-EzGame/1.png">
+<meta name="twitter:image" content="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/Blog/txblog/source_posts/MRCTF-EzGame/1.png">
 
 
     
@@ -203,11 +203,9 @@
 <p>但是这样处理之后<code>Assembly-CSharp.dll</code>就无了，替换成了<code>GameAssembly.dll</code>和<code>*Assembly.dll</code></p>
 <p>这个拖进dnspy是没用的，没什么信息，有个<a target="_blank" rel="noopener" href="https://github.com/Perfare/Il2CppDumper/">il2CppDumper</a>可以实现反编译回原来的<code>Assembly-CSharp.dll</code>（有一些基本信息，但是没代码）</p>
 <p>这题就是这样的..根据提示选择<strong>dll</strong>和<strong>global-metadata.dat</strong>，反编译的结果在<strong>DummyDll</strong>文件夹里</p>
-<img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source\_posts\MRCTF-EzGame\1.png" alt="1" style="zoom:80%;">
-
+<p><img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source_posts\MRCTF-EzGame\1.png" alt="1"></p>
 <h2 id="本题解法"><a href="#本题解法" class="headerlink" title="本题解法"></a>本题解法</h2><p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/237793#h2-1">官方WP</a>的做法是通过反编译得到得信息结合il2Cpp的API写<strong>dll注入</strong>脚本来解的，dll注入日后再弄。这里先学一下别的师傅结合ce的做法</p>
-<img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source\_posts\MRCTF-EzGame\2.png" alt="2" style="zoom:80%;">
-
+<p><img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source_posts\MRCTF-EzGame\2.png" alt="2"></p>
 <p>四个任务分别是：</p>
 <ol>
 <li>应该是到终点的意思</li>
@@ -218,37 +216,32 @@
 <p>ps：一开始尝试手动通关，有个地方怎么也跳不过去，可能是故意设（wo）置（tai）的（cai）吧hh</p>
 <h3 id="用CE找到关键数据内存"><a href="#用CE找到关键数据内存" class="headerlink" title="用CE找到关键数据内存"></a>用CE找到关键数据内存</h3><p>启动游戏，打开ce添加游戏进程</p>
 <p>扫描搜索数据，这里好像吃钻石的数量比较好搜，边吃边搜，直到搜索结果锁定在关键的几个位置，基本就没错了（可以尝试修改后在游戏查验来确认）</p>
-<img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source\_posts\MRCTF-EzGame\3.png" alt="3" style="zoom:80%;">
-
+<p><img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source_posts\MRCTF-EzGame\3.png" alt="3"></p>
 <p>然后看一下反编译后的dll里的信息：</p>
-<img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source\_posts\MRCTF-EzGame\4.png" alt="4" style="zoom:80%;">
-
-<p>有各个关键数据的偏移地址：像这样<img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source\_posts\MRCTF-EzGame\5.png" alt="5" style="zoom:80%;"></p>
+<p><img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source_posts\MRCTF-EzGame\4.png" alt="4"></p>
+<p>有各个关键数据的偏移地址：像这样<img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source_posts\MRCTF-EzGame\5.png" alt="5"></p>
 <p>然后可以用ce里的<strong>Structure dissect</strong>（在Memory View中的tool里面）来整理这些相关数据，不过要注意设置数据的字节长度，像这里的<strong>key</strong>实际上是<strong>8字节</strong>的，要给他右键改一下</p>
-<img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source\_posts\MRCTF-EzGame\6.png" alt="image-20210420184017102" style="zoom:80%;">
-
+<p><img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source_posts\MRCTF-EzGame\6.png" alt="6"></p>
 <p>全部给他按照要求修改后</p>
-<p><img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source_posts\MRCTF-EzGame\7.png" alt="image-20210420185446911"></p>
+<p><img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source_posts\MRCTF-EzGame\7.png" alt="7"></p>
 <p>getflag显示</p>
-<p><img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source_posts\MRCTF-EzGame\8.png" alt="image-20210420185559785"></p>
+<p><img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source_posts\MRCTF-EzGame\8.png" alt="8"></p>
 <p>应该是和flag相关的key不对，其实反编译出来有个函数叫<code>EatTokenUpdateKey</code>,应该是每吃一个钻石key都会更新，所以单纯地修改钻石数量是不行的。</p>
 <h3 id="结合dump内存分析"><a href="#结合dump内存分析" class="headerlink" title="结合dump内存分析"></a>结合dump内存分析</h3><p>ce里有个功能特方便，可以找到修改（或访问）指定内存的位置，右键就能看到。</p>
 <p>那先把设置里的debugger改成VEH（好像可以绕过一些反调试？），然后右键key的内存，“找到哪修改了着这个地址的内存”</p>
 <p>然后去吃颗星星触发</p>
-<img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source\_posts\MRCTF-EzGame\9.png" alt="image-20210420200247199" style="zoom:80%;">
-
+<p><img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source_posts\MRCTF-EzGame\9.png" alt="9"></p>
 <p>可以跟进进去直接在ce里看到修改位置的汇编码，能看伪代码吗？可以！</p>
 <p>网上有很多的dump进程内存的工具，我用的火绒剑，把内存dump出来后直接拖进ida可以反编译（这方法好像可以脱一些壳？）</p>
 <p>要在ida里找到函数对应的位置可以搜索函数头的字节，search里有一栏sequence of bytes，勾选一下那个Find all occurrences</p>
-<img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source\_posts\MRCTF-EzGame\10.png" alt="image-20210420202240978" style="zoom:80%;">
-
+<p><img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source_posts\MRCTF-EzGame\10.png" alt="10"></p>
 <p>注意要dump正确的文件（dll），但是不知道为啥我这里没法正确反编译，就tmlp…放一下别人的图吧</p>
-<p><img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source_posts\MRCTF-EzGame\11.png" alt="image-20210420221925458"></p>
+<p><img src="/2021/04/20/MRCTF-EzGame/Blog\txblog\source_posts\MRCTF-EzGame\11.png" alt="11"></p>
 <p>最后把这个函数撸一遍把正确的key跑出来再去ce里面修改就行了，这个就不说了。</p>
 
     </div>
      
-    <div class="post-footer__meta"><p>updated at 2021-04-20</p></div> 
+    <div class="post-footer__meta"><p>updated at 2021-04-21</p></div> 
     <div class="post-meta__cats"><a href="/tags/wp/" class="post-tags__link button"># wp</a><a href="/tags/MRCTF/" class="post-tags__link button"># MRCTF</a><a href="/tags/CE%E4%BD%BF%E7%94%A8/" class="post-tags__link button"># CE使用</a></div> 
 </article>
 
