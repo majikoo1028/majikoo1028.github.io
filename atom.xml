@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Unbelievable</title>
+  
+  <subtitle>Tring to catch the flag of my life</subtitle>
+  <link href="https://majikoo1028.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://majikoo1028.github.io/"/>
+  <updated>2021-07-22T05:32:50.631Z</updated>
+  <id>https://majikoo1028.github.io/</id>
+  
+  <author>
+    <name>Tobe.Unbelievable</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Canary_attack</title>
+    <link href="https://majikoo1028.github.io/2021/07/22/Canary-attack/"/>
+    <id>https://majikoo1028.github.io/2021/07/22/Canary-attack/</id>
+    <published>2021-07-22T01:31:38.000Z</published>
+    <updated>2021-07-22T05:32:50.631Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="Canary" scheme="https://majikoo1028.github.io/tags/Canary/"/>
+    
+    <category term="Stack" scheme="https://majikoo1028.github.io/tags/Stack/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>wasm逆向</title>
+    <link href="https://majikoo1028.github.io/2021/07/15/wasm%E9%80%86%E5%90%91/"/>
+    <id>https://majikoo1028.github.io/2021/07/15/wasm%E9%80%86%E5%90%91/</id>
+    <published>2021-07-14T16:25:45.000Z</published>
+    <updated>2021-07-14T17:10:49.705Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
+    
+    <category term="wasm逆向" scheme="https://majikoo1028.github.io/tags/wasm%E9%80%86%E5%90%91/"/>
+    
+    <category term="蓝帽杯" scheme="https://majikoo1028.github.io/tags/%E8%93%9D%E5%B8%BD%E6%9D%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>buu-re-97</title>
+    <link href="https://majikoo1028.github.io/2021/04/24/buu-re-97/"/>
+    <id>https://majikoo1028.github.io/2021/04/24/buu-re-97/</id>
+    <published>2021-04-24T08:05:21.000Z</published>
+    <updated>2021-05-01T09:18:37.559Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="buu" scheme="https://majikoo1028.github.io/tags/buu/"/>
+    
+    <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
+    
+    <category term="工具" scheme="https://majikoo1028.github.io/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="MFC" scheme="https://majikoo1028.github.io/tags/MFC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MRCTF-EzGame</title>
+    <link href="https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/"/>
+    <id>https://majikoo1028.github.io/2021/04/20/MRCTF-EzGame/</id>
+    <published>2021-04-20T03:05:58.000Z</published>
+    <updated>2021-05-01T09:07:15.017Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
+    
+    <category term="MRCTF" scheme="https://majikoo1028.github.io/tags/MRCTF/"/>
+    
+    <category term="CE使用" scheme="https://majikoo1028.github.io/tags/CE%E4%BD%BF%E7%94%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>IDA动态调试mips架构文件</title>
+    <link href="https://majikoo1028.github.io/2021/04/08/IDA%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95mips%E6%9E%B6%E6%9E%84%E6%96%87%E4%BB%B6/"/>
+    <id>https://majikoo1028.github.io/2021/04/08/IDA%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95mips%E6%9E%B6%E6%9E%84%E6%96%87%E4%BB%B6/</id>
+    <published>2021-04-08T12:48:04.000Z</published>
+    <updated>2021-04-08T16:33:45.825Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="动态调试" scheme="https://majikoo1028.github.io/tags/%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95/"/>
+    
+    <category term="mips" scheme="https://majikoo1028.github.io/tags/mips/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>IDApython</title>
+    <link href="https://majikoo1028.github.io/2021/03/30/IDApython/"/>
+    <id>https://majikoo1028.github.io/2021/03/30/IDApython/</id>
+    <published>2021-03-30T10:16:44.000Z</published>
+    <updated>2021-03-31T07:49:03.303Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="IDApython" scheme="https://majikoo1028.github.io/tags/IDApython/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>buu-re-79</title>
+    <link href="https://majikoo1028.github.io/2021/03/30/buu-re-79/"/>
+    <id>https://majikoo1028.github.io/2021/03/30/buu-re-79/</id>
+    <published>2021-03-30T00:48:27.000Z</published>
+    <updated>2021-03-30T14:16:53.332Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="buu" scheme="https://majikoo1028.github.io/tags/buu/"/>
+    
+    <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
+    
+    <category term="SMC" scheme="https://majikoo1028.github.io/tags/SMC/"/>
+    
+    <category term="AES" scheme="https://majikoo1028.github.io/tags/AES/"/>
+    
+    <category term="分组加密" scheme="https://majikoo1028.github.io/tags/%E5%88%86%E7%BB%84%E5%8A%A0%E5%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DASCTF三月赛</title>
+    <link href="https://majikoo1028.github.io/2021/03/29/DASCTF%E4%B8%89%E6%9C%88%E8%B5%9B/"/>
+    <id>https://majikoo1028.github.io/2021/03/29/DASCTF%E4%B8%89%E6%9C%88%E8%B5%9B/</id>
+    <published>2021-03-29T06:55:00.000Z</published>
+    <updated>2021-03-29T11:36:00.548Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
+    
+    <category term="DASCTF" scheme="https://majikoo1028.github.io/tags/DASCTF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>filpgame</title>
+    <link href="https://majikoo1028.github.io/2021/03/15/filpgame/"/>
+    <id>https://majikoo1028.github.io/2021/03/15/filpgame/</id>
+    <published>2021-03-15T07:26:09.000Z</published>
+    <updated>2021-03-15T09:09:57.650Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
+    
+    <category term="z3" scheme="https://majikoo1028.github.io/tags/z3/"/>
+    
+    <category term="V&amp;N2021" scheme="https://majikoo1028.github.io/tags/V-N2021/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>buu-re-73</title>
+    <link href="https://majikoo1028.github.io/2021/03/03/buu-re-73/"/>
+    <id>https://majikoo1028.github.io/2021/03/03/buu-re-73/</id>
+    <published>2021-03-03T06:43:51.000Z</published>
+    <updated>2021-03-03T08:58:33.095Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="buu" scheme="https://majikoo1028.github.io/tags/buu/"/>
+    
+    <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
+    
+    <category term="ollvm混淆" scheme="https://majikoo1028.github.io/tags/ollvm%E6%B7%B7%E6%B7%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>符号执行angr</title>
+    <link href="https://majikoo1028.github.io/2021/02/17/%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8Cangr/"/>
+    <id>https://majikoo1028.github.io/2021/02/17/%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8Cangr/</id>
+    <published>2021-02-17T09:13:23.000Z</published>
+    <updated>2021-02-23T04:32:06.365Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="angr" scheme="https://majikoo1028.github.io/tags/angr/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>buu-re-54</title>
+    <link href="https://majikoo1028.github.io/2021/02/14/buu-re-54/"/>
+    <id>https://majikoo1028.github.io/2021/02/14/buu-re-54/</id>
+    <published>2021-02-14T01:51:21.000Z</published>
+    <updated>2021-02-14T03:58:42.753Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="动态调试" scheme="https://majikoo1028.github.io/tags/%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95/"/>
+    
+    <category term="buu" scheme="https://majikoo1028.github.io/tags/buu/"/>
+    
+    <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
+    
+    <category term="二叉树遍历" scheme="https://majikoo1028.github.io/tags/%E4%BA%8C%E5%8F%89%E6%A0%91%E9%81%8D%E5%8E%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>二进制代码保护和混淆</title>
+    <link href="https://majikoo1028.github.io/2021/02/12/%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BB%A3%E7%A0%81%E4%BF%9D%E6%8A%A4%E5%92%8C%E6%B7%B7%E6%B7%86/"/>
+    <id>https://majikoo1028.github.io/2021/02/12/%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BB%A3%E7%A0%81%E4%BF%9D%E6%8A%A4%E5%92%8C%E6%B7%B7%E6%B7%86/</id>
+    <published>2021-02-12T09:15:57.000Z</published>
+    <updated>2021-02-14T15:57:56.378Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="二进制代码保护和混淆" scheme="https://majikoo1028.github.io/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BB%A3%E7%A0%81%E4%BF%9D%E6%8A%A4%E5%92%8C%E6%B7%B7%E6%B7%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>逆向常见算法识别</title>
+    <link href="https://majikoo1028.github.io/2021/02/12/%E9%80%86%E5%90%91%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E8%AF%86%E5%88%AB/"/>
+    <id>https://majikoo1028.github.io/2021/02/12/%E9%80%86%E5%90%91%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E8%AF%86%E5%88%AB/</id>
+    <published>2021-02-12T04:23:43.000Z</published>
+    <updated>2021-02-12T09:13:07.158Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="算法识别" scheme="https://majikoo1028.github.io/tags/%E7%AE%97%E6%B3%95%E8%AF%86%E5%88%AB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>buu-re-49</title>
+    <link href="https://majikoo1028.github.io/2021/02/11/buu-re-49/"/>
+    <id>https://majikoo1028.github.io/2021/02/11/buu-re-49/</id>
+    <published>2021-02-11T03:05:21.000Z</published>
+    <updated>2021-02-12T04:21:26.672Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="buu" scheme="https://majikoo1028.github.io/tags/buu/"/>
+    
+    <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
+    
+    <category term="工具" scheme="https://majikoo1028.github.io/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>汇编笔记9</title>
+    <link href="https://majikoo1028.github.io/2021/02/09/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B09/"/>
+    <id>https://majikoo1028.github.io/2021/02/09/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B09/</id>
+    <published>2021-02-09T09:32:04.000Z</published>
+    <updated>2021-02-09T10:25:10.141Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="汇编笔记" scheme="https://majikoo1028.github.io/tags/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>汇编笔记8</title>
+    <link href="https://majikoo1028.github.io/2021/02/03/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B08/"/>
+    <id>https://majikoo1028.github.io/2021/02/03/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B08/</id>
+    <published>2021-02-03T15:52:42.000Z</published>
+    <updated>2021-02-04T05:44:50.705Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="汇编笔记" scheme="https://majikoo1028.github.io/tags/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>汇编笔记7</title>
+    <link href="https://majikoo1028.github.io/2021/02/02/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B07/"/>
+    <id>https://majikoo1028.github.io/2021/02/02/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B07/</id>
+    <published>2021-02-02T04:22:19.000Z</published>
+    <updated>2021-02-02T05:13:07.549Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="汇编笔记" scheme="https://majikoo1028.github.io/tags/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>buu-re-21</title>
+    <link href="https://majikoo1028.github.io/2021/02/02/buu-re-21/"/>
+    <id>https://majikoo1028.github.io/2021/02/02/buu-re-21/</id>
+    <published>2021-02-01T18:04:13.000Z</published>
+    <updated>2021-02-01T18:25:40.173Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="buu" scheme="https://majikoo1028.github.io/tags/buu/"/>
+    
+    <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
+    
+    <category term="RSA" scheme="https://majikoo1028.github.io/tags/RSA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>buu-re-15</title>
+    <link href="https://majikoo1028.github.io/2021/02/01/buu-re-15/"/>
+    <id>https://majikoo1028.github.io/2021/02/01/buu-re-15/</id>
+    <published>2021-02-01T10:46:36.000Z</published>
+    <updated>2021-02-01T11:32:42.300Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="buu" scheme="https://majikoo1028.github.io/tags/buu/"/>
+    
+    <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
+    
+  </entry>
+  
+</feed>
