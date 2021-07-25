@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>pwntools学习 | Unbelievable</title>
+
+
+    <meta name="keywords" content="pwntools">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="简述Pwntools 分为两个模块，一个是pwn，简单地from pwn import *即可将所有子模块和常用系统库导入； 另一个是pwnlib，可以根据需要导入子模块，而不是像上面这个这样all in…（正常人谁不all in还一个个挑呢hhh） 常用的子模块pwnlib.tubes 通常用于与目标文件或者目标服务器进行交互 主要函数在pwnlib.tubes.tube中实现，子模块只负责某个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pwntools学习">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/07/25/pwntools%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="简述Pwntools 分为两个模块，一个是pwn，简单地from pwn import *即可将所有子模块和常用系统库导入； 另一个是pwnlib，可以根据需要导入子模块，而不是像上面这个这样all in…（正常人谁不all in还一个个挑呢hhh） 常用的子模块pwnlib.tubes 通常用于与目标文件或者目标服务器进行交互 主要函数在pwnlib.tubes.tube中实现，子模块只负责某个">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-25T03:13:22.000Z">
+<meta property="article:modified_time" content="2021-07-25T16:11:46.514Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="pwntools">
+<meta name="twitter:card" content="summary_large_image">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="Unbelievable" type="application/atom+xml">
+</head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+    <a href="/search/" id="btn-search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="32"><path d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z"></path></svg>
+    </a>
+
+
+        
+        
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        pwntools学习
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/07/" class="post-meta__date button">2021-07-25</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E5%AD%90%E6%A8%A1%E5%9D%97"><span class="toc-number">2.</span> <span class="toc-text">常用的子模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pwnlib-tubes"><span class="toc-number">2.1.</span> <span class="toc-text">pwnlib.tubes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pwnlib-context"><span class="toc-number">2.2.</span> <span class="toc-text">pwnlib.context</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pwnlib-elf"><span class="toc-number">2.3.</span> <span class="toc-text">pwnlib.elf</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pwnlib-asm"><span class="toc-number">2.4.</span> <span class="toc-text">pwnlib.asm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pwnlib-shellcraft"><span class="toc-number">2.5.</span> <span class="toc-text">pwnlib.shellcraft</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pwnlib-util"><span class="toc-number">2.6.</span> <span class="toc-text">pwnlib.util</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AA%E5%AE%8C%E5%BE%85%E7%BB%AD"><span class="toc-number">3.</span> <span class="toc-text">未完待续..</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">4.</span> <span class="toc-text">参考资料</span></a></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E5%AD%90%E6%A8%A1%E5%9D%97"><span class="toc-number">2.</span> <span class="toc-text">常用的子模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pwnlib-tubes"><span class="toc-number">2.1.</span> <span class="toc-text">pwnlib.tubes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pwnlib-context"><span class="toc-number">2.2.</span> <span class="toc-text">pwnlib.context</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pwnlib-elf"><span class="toc-number">2.3.</span> <span class="toc-text">pwnlib.elf</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pwnlib-asm"><span class="toc-number">2.4.</span> <span class="toc-text">pwnlib.asm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pwnlib-shellcraft"><span class="toc-number">2.5.</span> <span class="toc-text">pwnlib.shellcraft</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pwnlib-util"><span class="toc-number">2.6.</span> <span class="toc-text">pwnlib.util</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AA%E5%AE%8C%E5%BE%85%E7%BB%AD"><span class="toc-number">3.</span> <span class="toc-text">未完待续..</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">4.</span> <span class="toc-text">参考资料</span></a></li></ol>
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>Pwntools 分为两个模块，一个是pwn，简单地<code>from pwn import *</code>即可将所有子模块和常用系统库导入；</p>
+<p>另一个是pwnlib，可以根据需要导入子模块，而不是像上面这个这样all in…（正常人谁不all in还一个个挑呢hhh）</p>
+<h2 id="常用的子模块"><a href="#常用的子模块" class="headerlink" title="常用的子模块"></a>常用的子模块</h2><h3 id="pwnlib-tubes"><a href="#pwnlib-tubes" class="headerlink" title="pwnlib.tubes"></a>pwnlib.tubes</h3><p> <strong>通常用于与目标文件或者目标服务器进行交互</strong></p>
+<p>主要函数在<code>pwnlib.tubes.tube</code>中实现，子模块只负责某个管道特殊的地方。四种管道及其子模块如下：</p>
+<ul>
+<li><p>pwnlib.tubes.process: 进程</p>
+<blockquote>
+<p>p = process(‘/bin/sh’)</p>
+</blockquote>
+</li>
+<li><p>pwnlib.tubes.serialtube: 串口</p>
+</li>
+<li><p>pwnlib.tubes.sock: 套接字</p>
+<blockquote>
+<p>r = remote(‘127.0.0.1’, 1080)</p>
+<p>l = listen(1080)</p>
+</blockquote>
+</li>
+<li><p>pwnlib.tubes.ssh: SSH</p>
+<blockquote>
+<p>s = ssh(host = ‘example.com’, user = ‘name’, password = ‘passwd’)</p>
+</blockquote>
+</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pwnlib.tubes.tube中的主要函数如下：</span></span><br><span class="line">interactive() <span class="comment"># 交互模式，能够同时读写管道，通常在获取shell后调用</span></span><br><span class="line">recv(numb=<span class="number">1096</span>,timeout=default) <span class="comment"># 接收最多numb字节的数据</span></span><br><span class="line">recvn(numb,timeout=default) <span class="comment"># 接收numb字节的数据</span></span><br><span class="line">recvall() <span class="comment"># 接收数据直至EOF</span></span><br><span class="line">recvline(keepends=<span class="literal">True</span>) <span class="comment"># 接收一行数据，可选择是否保留行尾的&#x27;\n&#x27;</span></span><br><span class="line">recvrepeat(timeout=default) <span class="comment"># 接收数据知道EOF或timeout</span></span><br><span class="line">recvuntil(delims,timeout=default) <span class="comment"># 接收数据知道delims出现</span></span><br><span class="line">send(data) <span class="comment"># 发送数据</span></span><br><span class="line">sendafter(delim,data,timeout=default) <span class="comment"># 相当于 recvuntil(delims,timeout=default)和send(data)结合</span></span><br><span class="line">sendline(data) <span class="comment"># 发送一行数据，结尾默认加&#x27;\n&#x27;</span></span><br><span class="line">sendlineafter <span class="comment"># 类上</span></span><br><span class="line">close() <span class="comment"># 关闭管道</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="pwnlib-context"><a href="#pwnlib-context" class="headerlink" title="pwnlib.context"></a>pwnlib.context</h3><p>用于设置运行时变量，如目标系统、目标体系结构、端序、日志等</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>context.clear()       <span class="comment"># 恢复默认值</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>context.os = <span class="string">&#x27;linux&#x27;</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>context.arch = <span class="string">&#x27;arm&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>context.bits = <span class="number">32</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>context.endian = <span class="string">&#x27;little&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">vars</span>(context)</span><br><span class="line">&#123;<span class="string">&#x27;os&#x27;</span>: <span class="string">&#x27;linux&#x27;</span>, <span class="string">&#x27;bits&#x27;</span>: <span class="number">32</span>, <span class="string">&#x27;arch&#x27;</span>: <span class="string">&#x27;arm&#x27;</span>, <span class="string">&#x27;endian&#x27;</span>: <span class="string">&#x27;little&#x27;</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>context.update(os = <span class="string">&#x27;linux&#x27;</span>, arch = <span class="string">&#x27;amd64&#x27;</span>, bits = <span class="number">64</span>)    <span class="comment"># 更新</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>context.log_level = <span class="string">&#x27;debug&#x27;</span>                                <span class="comment"># 日志等级</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>context.log_file = <span class="string">&#x27;/tmp/pwnlog.txt&#x27;</span>                       <span class="comment"># 日志文件</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">vars</span>(context)</span><br><span class="line">&#123;<span class="string">&#x27;log_level&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;bits&#x27;</span>: <span class="number">64</span>, <span class="string">&#x27;endian&#x27;</span>: <span class="string">&#x27;little&#x27;</span>, <span class="string">&#x27;arch&#x27;</span>: <span class="string">&#x27;amd64&#x27;</span>, <span class="string">&#x27;log_file&#x27;</span>: &lt;<span class="built_in">open</span> file <span class="string">&#x27;/tmp/pwnlog.txt&#x27;</span>, mode <span class="string">&#x27;a&#x27;</span> at <span class="number">0x7f6024e8f9c0</span>&gt;, <span class="string">&#x27;os&#x27;</span>: <span class="string">&#x27;linux&#x27;</span>&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+<h3 id="pwnlib-elf"><a href="#pwnlib-elf" class="headerlink" title="pwnlib.elf"></a>pwnlib.elf</h3><p><strong>用于操作ELF文件，包括符号查找、虚拟内存、文件偏移、以及修改和保存二进制文件等功能。</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">asm(address,assembly) <span class="comment"># 汇编指令assembly插入ELF的address地址处，需要使用save函数来保存</span></span><br><span class="line">bss(offset) <span class="comment"># 返回.bss段加上offset后的地址</span></span><br><span class="line">checksec() <span class="comment"># 查看文件开启的安全保护</span></span><br><span class="line">disable_nx() <span class="comment"># 关闭NX</span></span><br><span class="line">disasm(address,n_bytes) <span class="comment"># 返回地址address反汇编n字节的字符串</span></span><br><span class="line">offset_to_vaddr(offset) <span class="comment"># 将偏移offset转换为虚拟地址</span></span><br><span class="line">vaddr_to_offset(address) <span class="comment"># 从虚拟地址address转换为文件偏移</span></span><br><span class="line">read(address,count) <span class="comment"># 从虚拟地址address读取count个字节的数据</span></span><br><span class="line">write(address,data) <span class="comment"># 在虚拟地址address写入data</span></span><br><span class="line">section(name) <span class="comment"># 获取name段的数据</span></span><br><span class="line">debug() <span class="comment"># 使用gdb.debug()进行调试</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="pwnlib-asm"><a href="#pwnlib-asm" class="headerlink" title="pwnlib.asm"></a>pwnlib.asm</h3><p>用于汇编和反汇编代码（确保已安装对应体系结构的binutils），体系结构、端序、字长等信息可以作为asm()的参数，但最好通过pwnlib.context来设置。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>asm(<span class="string">&#x27;nop&#x27;</span>)</span><br><span class="line"><span class="string">&#x27;\x90&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>context.clear(arch=<span class="string">&#x27;amd64&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bin_sh=asm(shellcraft.amd64.linux.sh())      </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>filename = make_elf(bin_sh,extract=<span class="literal">False</span>)    <span class="comment"># 构建具有指定二进制数据的ELF文件</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p = process(filename)</span><br><span class="line">[x] Starting local process <span class="string">&#x27;/tmp/pwn-asm-CxI3u5/step3-elf&#x27;</span></span><br><span class="line">[+] Starting local process <span class="string">&#x27;/tmp/pwn-asm-CxI3u5/step3-elf&#x27;</span>: pid <span class="number">4018</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p.sendline(<span class="string">&#x27;echo hello&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p.recv()</span><br><span class="line"><span class="string">&#x27;hello\n&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<h3 id="pwnlib-shellcraft"><a href="#pwnlib-shellcraft" class="headerlink" title="pwnlib.shellcraft"></a>pwnlib.shellcraft</h3><p>使用这个模块可以生成各种体系结构（aarch64、amd64、arm、i386、mips、thumb等）的shellcode代码</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span> shellcraft.arm.linux.sh()</span><br><span class="line">    /* execve(path=<span class="string">&#x27;/bin///sh&#x27;</span>, argv=[<span class="string">&#x27;sh&#x27;</span>], envp=<span class="number">0</span>) */</span><br><span class="line">    /* push <span class="string">&#x27;/bin///sh\x00AA&#x27;</span> */</span><br><span class="line">    movw r7, <span class="comment">#0x41410068 &amp; 0xffff</span></span><br><span class="line">    movt r7, <span class="comment">#0x41410068 &gt;&gt; 16</span></span><br><span class="line">    push &#123;r7&#125;</span><br><span class="line">    movw r7, <span class="comment">#0x732f2f2f &amp; 0xffff</span></span><br><span class="line">    movt r7, <span class="comment">#0x732f2f2f &gt;&gt; 16</span></span><br><span class="line">    push &#123;r7&#125;</span><br><span class="line">    movw r7, <span class="comment">#0x6e69622f &amp; 0xffff</span></span><br><span class="line">    movt r7, <span class="comment">#0x6e69622f &gt;&gt; 16</span></span><br><span class="line">    push &#123;r7&#125;</span><br><span class="line">    mov  r0, sp</span><br><span class="line">    /* push argument array [<span class="string">&#x27;sh\x00&#x27;</span>] */</span><br><span class="line">    /* push <span class="string">&#x27;sh\x00\x00&#x27;</span> */</span><br><span class="line">    movw r7, <span class="comment">#0x6873</span></span><br><span class="line">    push &#123;r7&#125;</span><br><span class="line">    eor  r12, r12 /* <span class="number">0</span> (<span class="comment">#0) */</span></span><br><span class="line">    push &#123;r12&#125; /* null terminate */</span><br><span class="line">    mov  r1, <span class="comment">#4</span></span><br><span class="line">    add r1, sp</span><br><span class="line">    mov  r12, r1</span><br><span class="line">    push &#123;r12&#125; /* <span class="string">&#x27;sh\x00&#x27;</span> */</span><br><span class="line">    mov  r1, sp</span><br><span class="line">    eor  r2, r2 /* <span class="number">0</span> (<span class="comment">#0) */</span></span><br><span class="line">    /* call execve() */</span><br><span class="line">    mov  r7, <span class="comment">#SYS_execve /* 0xb */</span></span><br><span class="line">    svc  <span class="number">0</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="pwnlib-util"><a href="#pwnlib-util" class="headerlink" title="pwnlib.util"></a>pwnlib.util</h3><p>util其实是模块的集合，包含了一些小工具。这里介绍俩packing和cyclic。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打包</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p32(<span class="number">0xdeadbeef</span>)</span><br><span class="line"><span class="string">&#x27;\xef\xbe\xad\xde&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p64(<span class="number">0xdeadbeef</span>).encode(<span class="string">&#x27;hex&#x27;</span>)</span><br><span class="line"><span class="string">&#x27;efbeadde00000000&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p32(<span class="number">0xdeadbeef</span>,endian=<span class="string">&#x27;big&#x27;</span>,sign=<span class="string">&#x27;unsigned&#x27;</span>)</span><br><span class="line"><span class="string">&#x27;\xde\xad\xbe\xef&#x27;</span></span><br><span class="line"><span class="comment"># 解包</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>u32(<span class="string">&#x27;1234&#x27;</span>)</span><br><span class="line"><span class="number">875770417</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>u32(<span class="string">&#x27;1234&#x27;</span>,endian=<span class="string">&#x27;big&#x27;</span>,sign=<span class="string">&#x27;signed&#x27;</span>)</span><br><span class="line"><span class="number">825373492</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>u32(<span class="string">&#x27;\xef\xbe\xad\xde&#x27;</span>)</span><br><span class="line"><span class="number">3735928559</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 帮助生成模式字符串</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>cyclic(<span class="number">20</span>)</span><br><span class="line"><span class="string">&#x27;aaaabaaacaaadaaaeaaa&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>cyclic(<span class="number">30</span>)</span><br><span class="line"><span class="string">&#x27;aaaabaaacaaadaaaeaaafaaagaaaha&#x27;</span></span><br><span class="line"><span class="comment"># 查找偏移</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>cyclic_find(<span class="number">0x61616162</span>)</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>cyclic_find(<span class="number">0x61616261</span>)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>cyclic_find(<span class="number">0x61616661</span>)</span><br><span class="line"><span class="number">19</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<h2 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续.."></a>未完待续..</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><blockquote>
+<p>《CTF竞赛权威指南（PWN篇）》</p>
+</blockquote>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-07-26</p></div> 
+    <div class="post-meta__cats"><a href="/tags/pwntools/" class="post-tags__link button"># pwntools</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/07/22/Canary-attack/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            Canary_attack
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.css">
+
+    
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.js"></script>
+
+    <script>
+        let lazyloadT = Boolean('false'),
+            auto_fancybox = Boolean('true')
+        if (auto_fancybox) {
+            $(".post__content").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        } else {
+            $(".post__content").find("fancybox").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        }
+    </script>
+ 
+
+ 
+
+ 
+
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>

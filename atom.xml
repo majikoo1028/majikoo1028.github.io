@@ -6,7 +6,7 @@
   <link href="https://majikoo1028.github.io/atom.xml" rel="self"/>
   
   <link href="https://majikoo1028.github.io/"/>
-  <updated>2021-07-22T05:32:50.631Z</updated>
+  <updated>2021-07-25T16:11:46.514Z</updated>
   <id>https://majikoo1028.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>pwntools学习</title>
+    <link href="https://majikoo1028.github.io/2021/07/25/pwntools%E5%AD%A6%E4%B9%A0/"/>
+    <id>https://majikoo1028.github.io/2021/07/25/pwntools%E5%AD%A6%E4%B9%A0/</id>
+    <published>2021-07-25T03:13:22.000Z</published>
+    <updated>2021-07-25T16:11:46.514Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="pwntools" scheme="https://majikoo1028.github.io/tags/pwntools/"/>
+    
+  </entry>
   
   <entry>
     <title>Canary_attack</title>
@@ -500,31 +523,6 @@
     <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
     
     <category term="RSA" scheme="https://majikoo1028.github.io/tags/RSA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>buu-re-15</title>
-    <link href="https://majikoo1028.github.io/2021/02/01/buu-re-15/"/>
-    <id>https://majikoo1028.github.io/2021/02/01/buu-re-15/</id>
-    <published>2021-02-01T10:46:36.000Z</published>
-    <updated>2021-02-01T11:32:42.300Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
-    
-    
-    
-    
-    <category term="buu" scheme="https://majikoo1028.github.io/tags/buu/"/>
-    
-    <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
     
   </entry>
   
