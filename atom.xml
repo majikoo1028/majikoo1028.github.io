@@ -6,7 +6,7 @@
   <link href="https://majikoo1028.github.io/atom.xml" rel="self"/>
   
   <link href="https://majikoo1028.github.io/"/>
-  <updated>2021-07-25T16:11:46.514Z</updated>
+  <updated>2021-07-31T14:53:55.736Z</updated>
   <id>https://majikoo1028.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>格式化字符串</title>
+    <link href="https://majikoo1028.github.io/2021/07/31/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
+    <id>https://majikoo1028.github.io/2021/07/31/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/</id>
+    <published>2021-07-31T01:00:43.000Z</published>
+    <updated>2021-07-31T14:53:55.736Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="格式化字符串" scheme="https://majikoo1028.github.io/tags/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
+    
+  </entry>
   
   <entry>
     <title>pwntools学习</title>
@@ -496,33 +519,6 @@
     
     
     <category term="汇编笔记" scheme="https://majikoo1028.github.io/tags/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>buu-re-21</title>
-    <link href="https://majikoo1028.github.io/2021/02/02/buu-re-21/"/>
-    <id>https://majikoo1028.github.io/2021/02/02/buu-re-21/</id>
-    <published>2021-02-01T18:04:13.000Z</published>
-    <updated>2021-02-01T18:25:40.173Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
-    
-    
-    
-    
-    <category term="buu" scheme="https://majikoo1028.github.io/tags/buu/"/>
-    
-    <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
-    
-    <category term="RSA" scheme="https://majikoo1028.github.io/tags/RSA/"/>
     
   </entry>
   
