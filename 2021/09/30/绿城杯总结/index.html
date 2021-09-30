@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>绿城杯总结 | Unbelievable</title>
+
+
+    <meta name="keywords" content="wp, z3">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="前言上午上课，中午开始看的题目 说是话，这次的比赛有把我捞到，哎 总结经验，吸取教训吧 easy_re常规题，不多bb。 main函数有个花指令，去一下  反编译看main函数  观察算法特征，是RC4，但是有个细节变异 多了个异或0x37 key也有，密文动调得到 编写exp 12345678910111213141516171819202122232425262728293031323334k">
+<meta property="og:type" content="article">
+<meta property="og:title" content="绿城杯总结">
+<meta property="og:url" content="https://majikoo1028.github.io/2021/09/30/%E7%BB%BF%E5%9F%8E%E6%9D%AF%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Unbelievable">
+<meta property="og:description" content="前言上午上课，中午开始看的题目 说是话，这次的比赛有把我捞到，哎 总结经验，吸取教训吧 easy_re常规题，不多bb。 main函数有个花指令，去一下  反编译看main函数  观察算法特征，是RC4，但是有个细节变异 多了个异或0x37 key也有，密文动调得到 编写exp 12345678910111213141516171819202122232425262728293031323334k">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/09/29/CQj2V3YlcHInTei.png">
+<meta property="og:image" content="https://i.loli.net/2021/09/29/RE5BcgNnAvZtL1a.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/09/30/%E7%BB%BF%E5%9F%8E%E6%9D%AF%E6%80%BB%E7%BB%93/1.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/09/30/%E7%BB%BF%E5%9F%8E%E6%9D%AF%E6%80%BB%E7%BB%93/2.png">
+<meta property="og:image" content="https://majikoo1028.github.io/2021/09/30/%E7%BB%BF%E5%9F%8E%E6%9D%AF%E6%80%BB%E7%BB%93/3.png">
+<meta property="article:published_time" content="2021-09-30T04:51:28.000Z">
+<meta property="article:modified_time" content="2021-09-30T09:07:51.892Z">
+<meta property="article:author" content="Tobe.Unbelievable">
+<meta property="article:tag" content="wp">
+<meta property="article:tag" content="z3">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.loli.net/2021/09/29/CQj2V3YlcHInTei.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/tomorrow-night-eighties.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="Unbelievable" type="application/atom+xml">
+</head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Unbelievable</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+                    <a href="/friends/" class="navbar-menu button">友链</a>
+                
+                    <a href="/about/" class="navbar-menu button">关于</a>
+                
+            </div>
+        
+        
+        
+    <a href="/search/" id="btn-search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="32"><path d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z"></path></svg>
+    </a>
+
+
+        
+        
+
+         
+    <a href="#" class="button" id="b2t" aria-label="Back to Top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+                    <a href="/friends/" class="dropdown-menu button">友链</a>
+                
+                    <a href="/about/" class="dropdown-menu button">关于</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        绿城杯总结
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2021/09/" class="post-meta__date button">2021-09-30</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#easy-re"><span class="toc-number"></span> <span class="toc-text">easy_re</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%9B%E7%9F%B3%E6%9C%BA"><span class="toc-number"></span> <span class="toc-text">抛石机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%82%E8%A7%A3%E6%96%B9%E7%A8%8B%E8%84%9A%E6%9C%AC%E2%80%94%E2%80%94z3"><span class="toc-number">1.</span> <span class="toc-text">求解方程脚本——z3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC16%E8%BF%9B%E5%88%B6%E5%BD%A2%E5%BC%8Fexp%E2%80%94%E2%80%94struct"><span class="toc-number">2.</span> <span class="toc-text">转16进制形式exp——struct</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E5%9D%91%E5%86%99%E6%B3%95%E2%80%94%E2%80%94C"><span class="toc-number">3.</span> <span class="toc-text">无坑写法——C</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#babyvxworks"><span class="toc-number"></span> <span class="toc-text">babyvxworks</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#exp"><span class="toc-number">1.</span> <span class="toc-text">exp</span></a></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">Article Directory</div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#easy-re"><span class="toc-number"></span> <span class="toc-text">easy_re</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%9B%E7%9F%B3%E6%9C%BA"><span class="toc-number"></span> <span class="toc-text">抛石机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%82%E8%A7%A3%E6%96%B9%E7%A8%8B%E8%84%9A%E6%9C%AC%E2%80%94%E2%80%94z3"><span class="toc-number">1.</span> <span class="toc-text">求解方程脚本——z3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC16%E8%BF%9B%E5%88%B6%E5%BD%A2%E5%BC%8Fexp%E2%80%94%E2%80%94struct"><span class="toc-number">2.</span> <span class="toc-text">转16进制形式exp——struct</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E5%9D%91%E5%86%99%E6%B3%95%E2%80%94%E2%80%94C"><span class="toc-number">3.</span> <span class="toc-text">无坑写法——C</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#babyvxworks"><span class="toc-number"></span> <span class="toc-text">babyvxworks</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#exp"><span class="toc-number">1.</span> <span class="toc-text">exp</span></a></li></ol>
+    </div>
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>上午上课，中午开始看的题目</p>
+<p>说是话，这次的比赛有把我捞到，哎</p>
+<p>总结经验，吸取教训吧</p>
+<h2 id="easy-re"><a href="#easy-re" class="headerlink" title="easy_re"></a>easy_re</h2><p>常规题，不多bb。</p>
+<p>main函数有个花指令，去一下</p>
+<p><img src="https://i.loli.net/2021/09/29/CQj2V3YlcHInTei.png" alt="image.png"></p>
+<p>反编译看main函数</p>
+<p><img src="https://i.loli.net/2021/09/29/RE5BcgNnAvZtL1a.png" alt="image.png"></p>
+<p>观察算法特征，是RC4，但是有个细节变异 多了个异或0x37</p>
+<p>key也有，密文动调得到</p>
+<p>编写exp</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">key = <span class="string">&#x27;tallmewhy&#x27;</span></span><br><span class="line"></span><br><span class="line">text = [<span class="number">0xF5</span>, <span class="number">0x8C</span>, <span class="number">0x8D</span>, <span class="number">0xE4</span>, <span class="number">0x9F</span>, <span class="number">0xA5</span>, <span class="number">0x28</span>, <span class="number">0x65</span>, <span class="number">0x30</span>, <span class="number">0xF4</span>,</span><br><span class="line">        <span class="number">0xEB</span>, <span class="number">0xD3</span>, <span class="number">0x24</span>, <span class="number">0xA9</span>, <span class="number">0x91</span>, <span class="number">0x1A</span>, <span class="number">0x6F</span>, <span class="number">0xD4</span>, <span class="number">0x6A</span>, <span class="number">0xD7</span>,</span><br><span class="line">        <span class="number">0x0B</span>, <span class="number">0x8D</span>, <span class="number">0xE8</span>, <span class="number">0xB8</span>, <span class="number">0x83</span>, <span class="number">0x4A</span>, <span class="number">0x5A</span>, <span class="number">0x6E</span>, <span class="number">0xBE</span>, <span class="number">0xCB</span>,</span><br><span class="line">        <span class="number">0xF4</span>, <span class="number">0x4B</span>, <span class="number">0x99</span>, <span class="number">0xD6</span>, <span class="number">0xE6</span>, <span class="number">0x54</span>, <span class="number">0x7A</span>, <span class="number">0x4F</span>, <span class="number">0x50</span>, <span class="number">0x14</span>,</span><br><span class="line">        <span class="number">0xE5</span>, <span class="number">0xEC</span>]</span><br><span class="line">v2 = <span class="number">0x100</span></span><br><span class="line">enc_key = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0x100</span>):</span><br><span class="line">    enc_key.append(i)</span><br><span class="line">v1 = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0x100</span>):</span><br><span class="line">    v1 = (enc_key[j] + v1 + <span class="built_in">ord</span>(key[j % <span class="built_in">len</span>(key)])) % <span class="number">0x100</span></span><br><span class="line">    v4 = enc_key[j]</span><br><span class="line">    enc_key[j] = enc_key[v1]</span><br><span class="line">    enc_key[v1] = v4 ^ <span class="number">0x37</span></span><br><span class="line"></span><br><span class="line">v0 = <span class="number">0</span></span><br><span class="line">v1 = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> enc_key:</span><br><span class="line">    print(<span class="built_in">hex</span>(i), <span class="string">&#x27;,&#x27;</span>, end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(text)):</span><br><span class="line">    v0 = (v0 + <span class="number">1</span>) % <span class="number">0x100</span></span><br><span class="line">    v1 = ((enc_key[v0] &amp; <span class="number">0xFF</span>) + v1) % <span class="number">0x100</span></span><br><span class="line">    v3 = enc_key[v0]</span><br><span class="line">    enc_key[v0] = enc_key[v1]</span><br><span class="line">    enc_key[v1] = v3</span><br><span class="line">    text[i] = text[i] ^ enc_key[(enc_key[v0] + enc_key[v1]) % <span class="number">0x100</span>]</span><br><span class="line"></span><br><span class="line">print()</span><br><span class="line">print(<span class="string">&#x27;&#x27;</span>.join(<span class="built_in">chr</span>(text[i]) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(text))))</span><br><span class="line"></span><br><span class="line"><span class="comment"># flag&#123;c5e0f5f6-f79e-5b9b-988f-28f046117802&#125;</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="抛石机"><a href="#抛石机" class="headerlink" title="抛石机"></a>抛石机</h2><p>这题是真的吃了浮点转换和运算的亏了，他的判断逻辑还是比较好把握的</p>
+<p><img src="/2021/09/30/%E7%BB%BF%E5%9F%8E%E6%9D%AF%E6%80%BB%E7%BB%93/1.png" alt="1"></p>
+<p>这里是判断输入的格式，必须得是<code>flag&#123;xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&#125;</code>，字符<code>x</code>的内容可变</p>
+<p><code>cont</code>是<code>x</code>的内容，8个字节为一组，然后存入4个全局变量中</p>
+<p><img src="/2021/09/30/%E7%BB%BF%E5%9F%8E%E6%9D%AF%E6%80%BB%E7%BB%93/2.png" alt="2"></p>
+<p>然后是check函数，内容如下：</p>
+<p><img src="/2021/09/30/%E7%BB%BF%E5%9F%8E%E6%9D%AF%E6%80%BB%E7%BB%93/3.png" alt="2"></p>
+<p>其实就是两个2元一次方程，一共得4个解。</p>
+<p>不是等式方程（有个范围值，但很小），有师傅索性直接等于0，然后求解方程。</p>
+<p>其实用范围约束来爆破得到的结果其实也一样，这个就不管了，不是我总结这题的重点</p>
+<p>check函数开头有两个判断，可以用来判断一个2元1次方程的两个解应该分别是哪个变量</p>
+<h3 id="求解方程脚本——z3"><a href="#求解方程脚本——z3" class="headerlink" title="求解方程脚本——z3"></a>求解方程脚本——z3</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">x = Real(<span class="string">&#x27;x&#x27;</span>)</span><br><span class="line"><span class="comment"># y = Real(&#x27;y&#x27;)</span></span><br><span class="line">z = Real(<span class="string">&#x27;z&#x27;</span>)</span><br><span class="line"><span class="comment"># l = Real(&#x27;l&#x27;)</span></span><br><span class="line"></span><br><span class="line">set_option(precision=<span class="number">20</span>)       <span class="comment"># 设置小数位数</span></span><br><span class="line">							<span class="comment"># 精度不够的话可能后面转16进制表示形式的时候会有差别</span></span><br><span class="line">s = Solver()</span><br><span class="line"></span><br><span class="line">v4 = <span class="number">149.2</span> * x + x * (-<span class="number">27.6</span>) * x - <span class="number">129.0</span></span><br><span class="line"><span class="comment"># v3 = 149.2 * y + y * (-27.6) * y - 129.0</span></span><br><span class="line">v2 = z * -<span class="number">39.6</span> * z + <span class="number">59.2</span> * z + <span class="number">37.8</span></span><br><span class="line"><span class="comment"># v1 = l * -39.6 * l + 59.2 * l + 37.8</span></span><br><span class="line"></span><br><span class="line">s.add(v4 == <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># s.add(v3 == 0)</span></span><br><span class="line"></span><br><span class="line">s.add(v2 == <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># s.add(v1 == 0)</span></span><br><span class="line"></span><br><span class="line">print(s.check())</span><br><span class="line"><span class="keyword">while</span> s.check() == sat:          <span class="comment"># 求多个解</span></span><br><span class="line">    m = s.model()</span><br><span class="line">    print(m)</span><br><span class="line">    s.add(Or(x != m[x]), z != m[z])</span><br><span class="line"></span><br><span class="line"><span class="comment">#sat</span></span><br><span class="line"><span class="comment">#[x = 1.08063237896641294938?, z = -0.48267319186340060660?]</span></span><br><span class="line"><span class="comment">#[z = 1.97762268681289555610?, x = 4.32516472248286241293?]    </span></span><br></pre></td></tr></table></figure></div>
+<p>由输出结果加上前面的分析可以判断：</p>
+<ul>
+<li>x == 1.08063237896641294938</li>
+<li>y == 4.32516472248286241293</li>
+<li>z == -0.48267319186340060660</li>
+<li>l == 1.97762268681289555610</li>
+</ul>
+<h3 id="转16进制形式exp——struct"><a href="#转16进制形式exp——struct" class="headerlink" title="转16进制形式exp——struct"></a>转16进制形式exp——struct</h3><p>坑点都在注释里写上了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">d2hex</span>(<span class="params">f</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">hex</span>(struct.unpack(<span class="string">&#x27;&lt;Q&#x27;</span>, struct.pack(<span class="string">&#x27;&lt;d&#x27;</span>, f))[<span class="number">0</span>])  <span class="comment"># double 转 qword(hex)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hex2d</span>(<span class="params">f</span>):</span></span><br><span class="line">    <span class="keyword">return</span> struct.unpack(<span class="string">&#x27;&lt;d&#x27;</span>, struct.pack(<span class="string">&#x27;&lt;Q&#x27;</span>, f))[<span class="number">0</span>]  <span class="comment"># qword 转 double</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(d2hex(<span class="number">1.0806323789</span>))</span><br><span class="line">print(d2hex(<span class="number">4.3251647224</span>))</span><br><span class="line">print(d2hex(-<span class="number">0.4826731918</span>))</span><br><span class="line">print(d2hex(<span class="number">1.9776226868</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 实际输出：</span></span><br><span class="line"><span class="comment"># 0x3ff14a452d65fca5</span></span><br><span class="line"><span class="comment"># 0x40114cf7fb22156c</span></span><br><span class="line"><span class="comment"># 0xbfdee41e195bf6c0</span></span><br><span class="line"><span class="comment"># 0x3fffa457afba236f</span></span><br><span class="line"><span class="comment"># 坑点之一：</span></span><br><span class="line"><span class="comment"># 程序中用到的只是高位4字节的值，后面的值与精度有关但不影响结果</span></span><br><span class="line"><span class="comment"># 所以截断一下（注意舍去和进位）</span></span><br><span class="line"><span class="comment"># x = 0x3ff14a45</span></span><br><span class="line"><span class="comment"># y = 0x40114cf8</span></span><br><span class="line"><span class="comment"># z = 0xbfdee41e</span></span><br><span class="line"><span class="comment"># l = 0x3fffa458</span></span><br><span class="line"><span class="comment"># 坑点之二：</span></span><br><span class="line"><span class="comment"># 这里是要让程序给变量赋值完后，xyzl的qword值得分别如上</span></span><br><span class="line"><span class="comment"># 所以flag要自行倒一下序（小端序）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># flag&#123;454af13f-f84c-1140-1ee4-debf58a4ff3f&#125;</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="无坑写法——C"><a href="#无坑写法——C" class="headerlink" title="无坑写法——C"></a>无坑写法——C</h3><p>其实C语言本身带的格式控制符写这种浮点数的题比python更自然一点，直接copy其他师傅的脚本了：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">0xffffffff</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> tmp = i&lt;&lt;<span class="number">32</span>;</span><br><span class="line">        <span class="keyword">double</span> tmp2 = *(<span class="keyword">double</span>*)(&amp;tmp);</span><br><span class="line">        <span class="keyword">double</span> v4 = <span class="number">149.2</span> * tmp2 + tmp2 * (<span class="number">-27.6</span>) * tmp2 - <span class="number">129.0</span>;</span><br><span class="line">        <span class="keyword">double</span> v2 = tmp2 * (<span class="number">-39.6</span>) * tmp2 + (<span class="number">59.2</span>) * tmp2 + (<span class="number">37.8</span>);</span><br><span class="line">        <span class="keyword">double</span> v1 = tmp2 * (<span class="number">-39.6</span>) * tmp2 + (<span class="number">59.2</span>) * tmp2 + (<span class="number">37.8</span>);</span><br><span class="line">        <span class="keyword">if</span>( v4&gt;<span class="number">-0.00003</span> &amp;&amp; v4&lt;<span class="number">0.00003</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;v4:%p\n&quot;</span>,i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(v2&gt;<span class="number">-0.00002</span> &amp;&amp; v2&lt;<span class="number">0.00002</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;v2:%p\n&quot;</span>,i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(v1&gt;<span class="number">-0.00003</span> &amp;&amp; v1&lt;<span class="number">0.00003</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;v1:%p\n&quot;</span>,i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//「努力学习的大康」</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="babyvxworks"><a href="#babyvxworks" class="headerlink" title="babyvxworks"></a>babyvxworks</h2><p>这题说实话是自己放弃了，vxworks好像是固件逆向，没做过，以为自己不会，没太认真看</p>
+<p>后面看了下wp发现也就那样。。认真看应该是能做出来的</p>
+<p>有很多花指令，有点去不干净**(tcl**，等一个大佬的去花wp，逻辑比较简单，就不分析了</p>
+<h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><p>直接copy的ChaMd5的exp</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">c=[<span class="number">188</span>,<span class="number">10</span>,<span class="number">187</span>,<span class="number">193</span>,<span class="number">213</span>,<span class="number">134</span>,<span class="number">127</span>,<span class="number">10</span>,<span class="number">201</span>,<span class="number">185</span>,<span class="number">81</span>,<span class="number">78</span>,<span class="number">136</span>,<span class="number">10</span>,<span class="number">130</span>,<span class="number">185</span>,<span class="number">49</span>,<span class="number">141</span>,<span class="number">10</span>,<span class="number">253</span>,<span class="number">201</span>,<span class="number">199</span>,<span class="number">127</span>,<span class="number">185</span>,<span class="number">17</span>,<span class="number">78</span>,<span class="number">185</span>,<span class="number">232</span>,<span class="number">141</span>,<span class="number">87</span>]</span><br><span class="line">t=<span class="number">30</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span>(<span class="params">c,t</span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(c)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(t):</span><br><span class="line">            c[i]-=<span class="number">3</span></span><br><span class="line">            c[i]=c[i]+<span class="number">0x100</span>&amp;<span class="number">0xff</span></span><br><span class="line">            c[i]^=<span class="number">0x22</span></span><br><span class="line">    <span class="comment"># print(bytes(c))</span></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1024</span>):</span><br><span class="line">    d=[i <span class="keyword">for</span> i <span class="keyword">in</span> c]</span><br><span class="line">    decrypt(d,t)</span><br><span class="line">    j=<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> j&lt;<span class="built_in">len</span>(d):</span><br><span class="line">        <span class="keyword">if</span> d[j]&lt;<span class="number">32</span> <span class="keyword">or</span> d[j]&gt;<span class="number">128</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        j+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> j==<span class="built_in">len</span>(d):print(<span class="built_in">bytes</span>(d))</span><br><span class="line">    <span class="comment"># print(t)</span></span><br><span class="line"></span><br><span class="line">flag&#123;helo_w0rld_W3lcome_70_R3&#125;</span><br></pre></td></tr></table></figure></div>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2021-09-30</p></div> 
+    <div class="post-meta__cats"><a href="/tags/wp/" class="post-tags__link button"># wp</a><a href="/tags/z3/" class="post-tags__link button"># z3</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2021/08/16/%E5%A0%86%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94bin/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            堆相关数据结构学习（二）——bin
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+    <div class="post__comments content-card" id="comment">
+        
+    <h4>Comments</h4>
+    
+    
+    
+    <div id="valine_container" class="valine_thread"></div>
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    </div>
+
+
+
+</main>
+
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="hide-button">隐藏</div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var message_Path = '/live2d/'
+        var home_Path = 'https://unbelievable.cool/'
+    </script>
+    <script type="text/javascript" src="/live2d/js/live2d.js"></script>
+    <!--<script type="text/javascript" src="/live2d/js/message.js"></script>-->
+    <script type="text/javascript">
+        loadlive2d("live2d", "/live2d/model/shifuku/shifuku.model.json");
+    </script>
+        <p class="footer-copyright">
+            Copyright © 2021&nbsp;-&nbsp;2021 <a href="/">Unbelievable</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.css">
+
+    
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.js"></script>
+
+    <script>
+        let lazyloadT = Boolean('false'),
+            auto_fancybox = Boolean('true')
+        if (auto_fancybox) {
+            $(".post__content").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        } else {
+            $(".post__content").find("fancybox").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        }
+    </script>
+ 
+
+ 
+
+ 
+
+
+    <script>
+        window.onload = () => {
+            document.querySelectorAll('.sliding-fold').forEach((item) => {
+                item.querySelector('summary').onclick = () => {
+                    item.classList.toggle("collapsed");
+                    item.classList.toggle("expanded");
+                };
+            });
+        };
+    </script>
+ 
+
+
+    
+
+    
+    
+    
+    <script>
+        function loadComment() {
+            let e;
+            (e = document.createElement("script")).src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+            document.body.appendChild(e);
+            e.onload = () => {
+                var valineConfig = {"appId":"3IAE9kFUvNz7NdN7PcECz4Xj-gzGzoHsz","appKey":"9EEiERWEkTIdpRtAlNy7160Q","placeholder":"冲！","path":null,"avatar":"hide","meta":["nick","mail","link"],"pageSize":null,"lang":null,"visitor":null,"highlight":null,"avatarForce":null,"recordIP":null,"serverURLs":null,"enableQQ":null,"requiredFields":["nick","mail"],"emojiCDN":null,"emojiMaps":null};
+                valineConfig.el = '#valine_container';
+                for (var i in valineConfig) {
+                    if (valineConfig[i] === null) delete valineConfig[i];
+                }
+                new Valine(valineConfig);
+            };
+        }
+    
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+    
+        setTimeout(function () {
+            if (!isBot && supportsIntersectionObserver) {
+                var comment_observer = new IntersectionObserver(function(entries) {
+                    if (entries[0].isIntersecting) {
+                        loadComment();
+                        comment_observer.disconnect();
+                    }
+                }, { threshold: [0] });
+                comment_observer.observe(document.getElementById('comment'));
+            } else {
+                loadComment();
+            }
+        }, 1);
+    </script>
+
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+
+
+    </body>
+</html>
