@@ -6,7 +6,7 @@
   <link href="https://majikoo1028.github.io/atom.xml" rel="self"/>
   
   <link href="https://majikoo1028.github.io/"/>
-  <updated>2021-11-24T12:47:43.042Z</updated>
+  <updated>2022-02-11T06:10:56.646Z</updated>
   <id>https://majikoo1028.github.io/</id>
   
   <author>
@@ -15,6 +15,57 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ARM汇编笔记</title>
+    <link href="https://majikoo1028.github.io/2022/02/10/ARM%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B0/"/>
+    <id>https://majikoo1028.github.io/2022/02/10/ARM%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B0/</id>
+    <published>2022-02-10T10:09:06.000Z</published>
+    <updated>2022-02-11T06:10:56.646Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="汇编笔记" scheme="https://majikoo1028.github.io/tags/%E6%B1%87%E7%BC%96%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ios系统架构</title>
+    <link href="https://majikoo1028.github.io/2022/02/10/ios%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/"/>
+    <id>https://majikoo1028.github.io/2022/02/10/ios%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/</id>
+    <published>2022-02-10T07:59:17.000Z</published>
+    <updated>2022-02-10T07:59:17.047Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>堆相关源码学习（搬运</title>
+    <link href="https://majikoo1028.github.io/2021/11/25/%E5%A0%86%E7%9B%B8%E5%85%B3%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%88%E6%90%AC%E8%BF%90/"/>
+    <id>https://majikoo1028.github.io/2021/11/25/%E5%A0%86%E7%9B%B8%E5%85%B3%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%88%E6%90%AC%E8%BF%90/</id>
+    <published>2021-11-25T05:34:05.000Z</published>
+    <updated>2021-11-25T15:45:51.965Z</updated>
+    
+    
+    
+    
+    
+    <category term="Heap" scheme="https://majikoo1028.github.io/tags/Heap/"/>
+    
+  </entry>
   
   <entry>
     <title>堆相关数据结构学习（二）——bin</title>
@@ -442,81 +493,6 @@
     <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
     
     <category term="ollvm混淆" scheme="https://majikoo1028.github.io/tags/ollvm%E6%B7%B7%E6%B7%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>符号执行angr</title>
-    <link href="https://majikoo1028.github.io/2021/02/17/%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8Cangr/"/>
-    <id>https://majikoo1028.github.io/2021/02/17/%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8Cangr/</id>
-    <published>2021-02-17T09:13:23.000Z</published>
-    <updated>2021-02-23T04:32:06.365Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
-    
-    
-    
-    
-    <category term="angr" scheme="https://majikoo1028.github.io/tags/angr/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>buu-re-54</title>
-    <link href="https://majikoo1028.github.io/2021/02/14/buu-re-54/"/>
-    <id>https://majikoo1028.github.io/2021/02/14/buu-re-54/</id>
-    <published>2021-02-14T01:51:21.000Z</published>
-    <updated>2021-02-14T03:58:42.753Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
-    
-    
-    
-    
-    <category term="动态调试" scheme="https://majikoo1028.github.io/tags/%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95/"/>
-    
-    <category term="buu" scheme="https://majikoo1028.github.io/tags/buu/"/>
-    
-    <category term="wp" scheme="https://majikoo1028.github.io/tags/wp/"/>
-    
-    <category term="二叉树遍历" scheme="https://majikoo1028.github.io/tags/%E4%BA%8C%E5%8F%89%E6%A0%91%E9%81%8D%E5%8E%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>二进制代码保护和混淆</title>
-    <link href="https://majikoo1028.github.io/2021/02/12/%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BB%A3%E7%A0%81%E4%BF%9D%E6%8A%A4%E5%92%8C%E6%B7%B7%E6%B7%86/"/>
-    <id>https://majikoo1028.github.io/2021/02/12/%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BB%A3%E7%A0%81%E4%BF%9D%E6%8A%A4%E5%92%8C%E6%B7%B7%E6%B7%86/</id>
-    <published>2021-02-12T09:15:57.000Z</published>
-    <updated>2021-02-14T15:57:56.378Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
-    
-    
-    
-    
-    <category term="二进制代码保护和混淆" scheme="https://majikoo1028.github.io/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BB%A3%E7%A0%81%E4%BF%9D%E6%8A%A4%E5%92%8C%E6%B7%B7%E6%B7%86/"/>
     
   </entry>
   
